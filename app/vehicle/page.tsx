@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Container from "@/components/Container";
+import StructuredData from "@/components/seo/StructuredData";
 import {
   Users,
   Bed,
@@ -76,8 +77,57 @@ const specs = [
 export default function VehiclePage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
+  // Product構造化データ
+  const productData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "FieldBase-K キャンピングカーレンタル",
+    description: "家族みんなで快適に過ごせる、充実装備のキャンピングカー。乗車定員6名、就寝定員4名。",
+    image: vehicleImages.map(img => `https://fieldbase-k.jp${img.src}`),
+    brand: {
+      "@type": "Brand",
+      name: "FieldBase-K",
+    },
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "JPY",
+      lowPrice: "15000",
+      highPrice: "50000",
+      offerCount: "4",
+      availability: "https://schema.org/InStock",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5.0",
+      reviewCount: "1",
+    },
+  };
+
+  // Breadcrumb構造化データ
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "ホーム",
+        item: "https://fieldbase-k.jp",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "車両詳細",
+        item: "https://fieldbase-k.jp/vehicle",
+      },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <>
+      <StructuredData data={productData} />
+      <StructuredData data={breadcrumbData} />
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <Image
@@ -373,5 +423,6 @@ export default function VehiclePage() {
         </Container>
       </section>
     </div>
+    </>
   );
 }

@@ -12,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Container from "@/components/Container";
+import StructuredData from "@/components/seo/StructuredData";
 import {
   HelpCircle,
   Calendar,
@@ -154,8 +155,28 @@ const quickLinks = [
 ];
 
 export default function FAQPage() {
+  // FAQPage構造化データを生成
+  const allFaqs = faqCategories.flatMap(category =>
+    category.faqs.map(faq => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    }))
+  );
+
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: allFaqs,
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <>
+      <StructuredData data={faqStructuredData} />
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
       <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
         <Image
@@ -330,5 +351,6 @@ export default function FAQPage() {
         </Container>
       </section>
     </div>
+    </>
   );
 }
