@@ -11,7 +11,6 @@ import {
   Shield,
   Heart,
   Users,
-  Car,
   Calendar,
   ArrowRight,
   Star,
