@@ -7,35 +7,34 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Container from "@/components/Container";
 import {
-  Sparkles,
-  Shield,
+  Truck,
+  Wallet,
   Heart,
-  Users,
   Calendar,
   ArrowRight,
   Star,
 } from "lucide-react";
+import topSlide from "@/assets/top_slide01.jpg";
+import exteriorSlide01 from "@/assets/exterior_box02_slide01.jpg";
 
 const features = [
   {
+    icon: Truck,
+    title: "魅力的な貸出車両",
+    description:
+      "日本最大級のキャンピングカービルダー・ナッツRVのジョリビーをお貸しします。コンパクトで高機能な一台です。",
+  },
+  {
+    icon: Wallet,
+    title: "リーズナブルな価格",
+    description:
+      "平日1日16,500円〜。長期割引やショート料金など、お得なプランをご用意しています。",
+  },
+  {
     icon: Heart,
-    title: "家族思いのサービス",
-    description: "お子様連れでも安心してご利用いただける、きめ細やかなサポート体制",
-  },
-  {
-    icon: Shield,
-    title: "初心者でも安心",
-    description: "丁寧な説明と充実したサポートで、初めての方でも安心",
-  },
-  {
-    icon: Sparkles,
-    title: "清潔で快適",
-    description: "毎回徹底的にクリーニング。快適な車内環境をお約束します",
-  },
-  {
-    icon: Users,
-    title: "個人運営の温かみ",
-    description: "大手にはない、オーナー自らの丁寧な対応とアフターフォロー",
+    title: "個人オーナーならではの親切な対応",
+    description:
+      "大手にはない、オーナー自らの丁寧な説明とアフターフォロー。初めての方でも安心です。",
   },
 ];
 
@@ -53,11 +52,12 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?w=1920&q=80"
+            src={topSlide}
             alt="キャンピングカーで家族旅行"
             fill
             className="object-cover brightness-50"
             priority
+            placeholder="blur"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50" />
         </div>
@@ -168,14 +168,14 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              選ばれる理由
+              FieldBase-Kが選ばれる理由
             </h2>
             <p className="text-xl text-text-sub max-w-2xl mx-auto">
               FieldBase-Kならではの、安心と快適をお届けします
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
@@ -216,18 +216,18 @@ export default function Home() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                快適な車内空間
+                ナッツRV ジョリビー
               </h2>
               <p className="text-xl text-text-sub mb-6">
-                家族みんなでゆったりくつろげる、充実の設備を完備。
-                キッチン、冷蔵庫、エアコンなど、必要なものはすべて揃っています。
+                日本最大級のキャンピングカービルダー・ナッツRVが手がけるジョリビー。
+                コンパクトながら充実装備で、快適なキャンピングカーライフを実現します。
               </p>
               <ul className="space-y-3 mb-8">
                 {[
-                  "乗車定員: 6名（要確認）",
-                  "就寝定員: 4名（要確認）",
-                  "フル装備のキッチン",
-                  "冷暖房完備",
+                  "コンパクトな車体（全長4.79m × 全幅1.96m × 全高2.72m）",
+                  "一般的な駐車場サイズ（2m×5m）に収まるサイズ",
+                  "エボライト＆リチウムイオンバッテリー搭載",
+                  "家庭用エアコン＆FFヒーター完備",
                 ].map((item, index) => (
                   <motion.li
                     key={index}
@@ -261,10 +261,11 @@ export default function Home() {
               className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl"
             >
               <Image
-                src="https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?w=800&q=80"
-                alt="キャンピングカー内装"
+                src={exteriorSlide01}
+                alt="ナッツRV ジョリビー外観"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-700"
+                placeholder="blur"
               />
             </motion.div>
           </div>
@@ -299,17 +300,17 @@ export default function Home() {
               <CardContent className="p-8 text-center">
                 <div className="mb-6">
                   <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                    ¥XX,XXX
-                    <span className="text-2xl text-text-sub">〜</span>
+                    ¥16,500
+                    <span className="text-2xl text-text-sub">〜/日</span>
                   </div>
-                  <p className="text-text-sub">1泊2日〜（料金は要設定）</p>
+                  <p className="text-text-sub">平日1日料金（税込）</p>
                 </div>
 
                 <div className="space-y-2 mb-8 text-left max-w-md mx-auto">
                   {[
-                    "保険料込み",
+                    "自動車保険料込み",
                     "基本装備使用料込み",
-                    "24時間サポート",
+                    "3日以上のご利用で長期割引あり",
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Star className="w-4 h-4 text-secondary mr-2 fill-secondary" />
@@ -337,10 +338,11 @@ export default function Home() {
       <section className="py-24 bg-gradient-to-r from-primary via-primary-dark to-primary relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <Image
-            src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=1920&q=80"
+            src={topSlide}
             alt="Background"
             fill
             className="object-cover"
+            placeholder="blur"
           />
         </div>
 
