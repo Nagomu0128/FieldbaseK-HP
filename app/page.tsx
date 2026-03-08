@@ -48,7 +48,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[70vh] sm:min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -64,14 +64,14 @@ export default function Home() {
         </div>
 
         {/* Hero Content */}
-        <Container className="relative z-10 py-32">
+        <Container className="relative z-10 py-16 sm:py-24 md:py-32">
           <div className="text-center text-white">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
                 家族の思い出を
                 <br />
                 <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
@@ -84,7 +84,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl md:text-2xl mb-12 text-gray-200 max-w-3xl mx-auto"
+              className="text-base sm:text-xl md:text-2xl mb-8 sm:mb-12 text-gray-200 max-w-3xl mx-auto px-2"
             >
               FieldBase-Kのキャンピングカーで、
               <br className="hidden md:block" />
