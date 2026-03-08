@@ -6,52 +6,19 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Container from "@/components/Container";
-import { Check, X, Calendar, ArrowRight, AlertCircle } from "lucide-react";
+import { Check, X, Calendar, ArrowRight, AlertCircle, Clock, Percent } from "lucide-react";
 
-const basePricing = [
-  { days: "1泊2日", price: "XX,XXX", popular: false },
-  { days: "2泊3日", price: "XX,XXX", popular: true },
-  { days: "3泊4日", price: "XX,XXX", popular: false },
-  { days: "4泊5日", price: "XX,XXX", popular: false },
-];
-
-const seasonalPricing = [
-  {
-    season: "通常期",
-    period: "平日・閑散期",
-    description: "お得にご利用いただけます",
-    multiplier: "基本料金",
-    color: "from-blue-500 to-blue-600",
-  },
-  {
-    season: "繁忙期",
-    period: "週末・祝日・春休み・夏休み・年末年始",
-    description: "人気の時期です",
-    multiplier: "+20%（要確認）",
-    color: "from-secondary to-secondary-dark",
-  },
-  {
-    season: "オフシーズン",
-    period: "冬季（12月〜2月、年末年始を除く）",
-    description: "特別価格でご提供",
-    multiplier: "-10%（要確認）",
-    color: "from-primary to-primary-dark",
-  },
-];
-
-const options = [
-  { name: "チャイルドシート", price: "1,000円/日（要確認）" },
-  { name: "追加寝具セット", price: "2,000円/泊（要確認）" },
-  { name: "BBQセット", price: "3,000円/回（要確認）" },
-  { name: "キャンプチェア・テーブルセット", price: "1,500円/回（要確認）" },
-  { name: "免責補償（NOC免除）", price: "2,000円/日（要確認）" },
+const cancellationPolicy = [
+  { period: "出発日の8日前まで", fee: "無料" },
+  { period: "出発日の7日〜4日前", fee: "20%" },
+  { period: "出発日の3日〜2日前", fee: "30%" },
+  { period: "出発日当日", fee: "50%" },
+  { period: "無連絡", fee: "100%" },
 ];
 
 const included = [
-  "車両保険",
-  "対人・対物保険",
+  "自動車保険料",
   "基本装備使用料",
-  "24時間サポート",
   "出発前説明",
   "清掃費",
 ];
@@ -60,16 +27,36 @@ const notIncluded = [
   "燃料代（満タン返し）",
   "高速道路料金",
   "駐車場料金",
-  "オプション装備",
   "キャンプ場利用料",
 ];
 
-const cancellationPolicy = [
-  { period: "利用日の30日前まで", fee: "無料" },
-  { period: "29日前〜14日前", fee: "料金の30%（要確認）" },
-  { period: "13日前〜7日前", fee: "料金の50%（要確認）" },
-  { period: "6日前〜前日", fee: "料金の80%（要確認）" },
-  { period: "当日・無連絡", fee: "料金の100%" },
+const simulations = [
+  {
+    title: "土日で1泊2日レンタル",
+    items: [
+      { label: "土曜日（9:00〜）", price: "¥22,000" },
+      { label: "日曜日（〜18:00）", price: "¥22,000" },
+    ],
+    total: "¥44,000",
+  },
+  {
+    title: "平日1泊2日＋ゆっくりプラン利用",
+    items: [
+      { label: "平日1日目（9:00〜）", price: "¥16,500" },
+      { label: "平日2日目（9:00〜18:00）", price: "¥16,500" },
+      { label: "ゆっくりプラン（22:00まで返却）", price: "¥4,400" },
+    ],
+    total: "¥37,400",
+  },
+  {
+    title: "金曜15時〜日曜日18時までのレンタル",
+    items: [
+      { label: "金曜日ショート（15:00〜）", price: "¥11,000" },
+      { label: "土曜日（1日レンタル）", price: "¥22,000" },
+      { label: "日曜日（〜18:00）", price: "¥22,000" },
+    ],
+    total: "¥55,000",
+  },
 ];
 
 export default function PricingPage() {
@@ -113,148 +100,7 @@ export default function PricingPage() {
           >
             <h2 className="text-4xl font-bold mb-4">基本料金</h2>
             <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              ご利用日数に応じた基本料金です
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {basePricing.map((plan, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card
-                  className={`relative h-full ${
-                    plan.popular
-                      ? "border-4 border-secondary shadow-2xl scale-105"
-                      : "border-2 hover:border-primary"
-                  } transition-all duration-300`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-secondary to-secondary-dark text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
-                        人気
-                      </span>
-                    </div>
-                  )}
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-2xl">{plan.days}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <div className="mb-4">
-                      <span className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        ¥{plan.price}
-                      </span>
-                      <span className="text-text-sub">〜</span>
-                    </div>
-                    <p className="text-sm text-text-sub mb-6">
-                      通常期の料金です
-                    </p>
-                    <Button
-                      asChild
-                      className={`w-full ${
-                        plan.popular
-                          ? "bg-gradient-to-r from-secondary to-secondary-dark"
-                          : "bg-gradient-to-r from-primary to-primary-dark"
-                      }`}
-                    >
-                      <Link href="/calendar">空き状況を確認</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-8 text-center"
-          >
-            <Card className="max-w-2xl mx-auto bg-blue-50 border-2 border-blue-200">
-              <CardContent className="p-6">
-                <div className="flex items-start">
-                  <AlertCircle className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" />
-                  <div className="text-left">
-                    <p className="font-semibold text-blue-900 mb-2">
-                      5泊以上のご利用も承ります
-                    </p>
-                    <p className="text-blue-700">
-                      長期ご利用の場合は特別料金をご用意しております。お気軽にお問い合わせください。
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* Seasonal Pricing */}
-      <section className="py-20 bg-white">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">シーズン別料金</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              時期により料金が異なります
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {seasonalPricing.map((season, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="h-full hover:shadow-xl transition-shadow duration-300">
-                  <CardHeader className={`bg-gradient-to-r ${season.color} text-white rounded-t-lg`}>
-                    <CardTitle className="text-center text-2xl">
-                      {season.season}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <p className="text-sm text-text-sub mb-2">{season.period}</p>
-                    <p className="text-sm mb-4">{season.description}</p>
-                    <div className="text-center py-4 bg-gray-50 rounded-lg">
-                      <span className="text-2xl font-bold text-primary">
-                        {season.multiplier}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Options Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">オプション装備</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              ご希望に応じて追加できます
+              基本の貸出時間は9時〜18時となります（税込）
             </p>
           </motion.div>
 
@@ -266,22 +112,59 @@ export default function PricingPage() {
           >
             <Card className="max-w-3xl mx-auto shadow-xl">
               <CardContent className="p-8">
-                <div className="space-y-4">
-                  {options.map((option, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.05 }}
-                      className="flex justify-between items-center py-4 border-b border-gray-200 last:border-0"
-                    >
-                      <span className="font-medium">{option.name}</span>
-                      <span className="text-primary font-semibold">
-                        {option.price}
-                      </span>
-                    </motion.div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-center">
+                    <thead>
+                      <tr className="border-b-2 border-primary/20">
+                        <th className="py-4 px-4 text-left font-semibold text-text-sub"></th>
+                        <th className="py-4 px-4 font-semibold text-lg">一日料金</th>
+                        <th className="py-4 px-4 font-semibold text-lg">ショート料金</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-5 px-4 text-left font-semibold text-lg">平日</td>
+                        <td className="py-5 px-4">
+                          <span className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            ¥16,500
+                          </span>
+                        </td>
+                        <td className="py-5 px-4">
+                          <span className="text-3xl font-bold text-primary">
+                            ¥11,000
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-5 px-4 text-left font-semibold text-lg">土日祝</td>
+                        <td className="py-5 px-4">
+                          <span className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            ¥22,000
+                          </span>
+                        </td>
+                        <td className="py-5 px-4">
+                          <span className="text-3xl font-bold text-primary">
+                            ¥11,000
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-8 space-y-3 text-text-sub">
+                  <div className="flex items-start">
+                    <span className="text-primary mr-2 mt-0.5">•</span>
+                    <span>ショート料金は15時〜18時までの午後引き渡し、または9:00〜12:00までの翌朝返却の場合に適用されます。</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-primary mr-2 mt-0.5">•</span>
+                    <span>貸出料金には自動車保険料を含んでおります。</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-primary mr-2 mt-0.5">•</span>
+                    <span>ペットの同乗はお断りさせていただいています。</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -289,8 +172,187 @@ export default function PricingPage() {
         </Container>
       </section>
 
-      {/* Included/Not Included Section */}
+      {/* Extension Pricing */}
       <section className="py-20 bg-white">
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-4">延長料金</h2>
+            <p className="text-xl text-text-sub max-w-2xl mx-auto">
+              ご返却時間の延長も柔軟に対応いたします（税込）
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Card className="max-w-3xl mx-auto shadow-xl">
+              <CardContent className="p-8">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-center">
+                    <thead>
+                      <tr className="border-b-2 border-primary/20">
+                        <th className="py-4 px-4 text-left font-semibold text-text-sub"></th>
+                        <th className="py-4 px-4 font-semibold text-lg">1時間延長</th>
+                        <th className="py-4 px-4 font-semibold text-lg">ゆっくりプラン</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="py-5 px-4 text-left font-semibold text-lg">平日</td>
+                        <td className="py-5 px-4">
+                          <span className="text-2xl font-bold text-primary">¥2,200</span>
+                        </td>
+                        <td className="py-5 px-4">
+                          <span className="text-2xl font-bold text-primary">¥4,400</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-5 px-4 text-left font-semibold text-lg">土日祝</td>
+                        <td className="py-5 px-4">
+                          <span className="text-2xl font-bold text-primary">¥2,200</span>
+                        </td>
+                        <td className="py-5 px-4">
+                          <span className="text-2xl font-bold text-primary">¥5,500</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-8 space-y-3 text-text-sub">
+                  <div className="flex items-start">
+                    <Clock className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                    <span>ゆっくりプランは、本来18時までの返却時間を延長料金無しで22時までとさせていただきます。（事前にお申込みください）</span>
+                  </div>
+                  <div className="flex items-start">
+                    <AlertCircle className="w-5 h-5 text-secondary mr-2 mt-0.5 flex-shrink-0" />
+                    <span>ご返却最終時刻は22時までとなっております。22時以降のご返却につきましては、翌日のショート料金（翌日12時迄の返却）料金を適用させていただきます。</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* Long-term Discount */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-4">長期割引</h2>
+            <p className="text-xl text-text-sub max-w-2xl mx-auto">
+              3日以上の長期ご利用時には、総額に対して割引を適用いたします
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            {[
+              { days: "3日以上", discount: "5%", color: "from-blue-400 to-blue-500" },
+              { days: "5日以上", discount: "10%", color: "from-primary to-primary-dark" },
+              { days: "7日以上", discount: "15%", color: "from-secondary to-secondary-dark" },
+              { days: "10日以上", discount: "20%", color: "from-orange-500 to-red-500" },
+            ].map((tier, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <Card className="h-full hover:shadow-xl transition-shadow duration-300 text-center">
+                  <CardContent className="p-6">
+                    <div className={`w-16 h-16 mx-auto bg-gradient-to-br ${tier.color} rounded-full flex items-center justify-center mb-4`}>
+                      <Percent className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="text-lg font-semibold mb-2">{tier.days}</div>
+                    <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {tier.discount}
+                    </div>
+                    <div className="text-sm text-text-sub mt-1">割引</div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Price Simulation */}
+      <section className="py-20 bg-white">
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-4">料金シミュレーション例</h2>
+            <p className="text-xl text-text-sub max-w-2xl mx-auto">
+              代表的な利用パターンの料金例をご紹介します
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {simulations.map((sim, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <Card className="h-full hover:shadow-xl transition-shadow duration-300">
+                  <CardHeader className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-t-lg">
+                    <CardTitle className="text-center text-lg">
+                      ケース{index + 1}
+                    </CardTitle>
+                    <p className="text-center text-sm opacity-90">{sim.title}</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="space-y-3 mb-6">
+                      {sim.items.map((item, itemIndex) => (
+                        <div
+                          key={itemIndex}
+                          className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0"
+                        >
+                          <span className="text-sm text-text-sub">{item.label}</span>
+                          <span className="font-semibold">{item.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-between items-center pt-4 border-t-2 border-primary/20">
+                      <span className="font-bold text-lg">合計</span>
+                      <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        {sim.total}
+                      </span>
+                    </div>
+                    <p className="text-xs text-text-sub mt-2 text-right">（税込）</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Included/Not Included Section */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -373,7 +435,7 @@ export default function PricingPage() {
       </section>
 
       {/* Cancellation Policy */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-20 bg-white">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -382,10 +444,7 @@ export default function PricingPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4">キャンセルポリシー</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              キャンセル時の手数料について
-            </p>
+            <h2 className="text-4xl font-bold mb-4">キャンセル料金</h2>
           </motion.div>
 
           <motion.div
@@ -408,7 +467,7 @@ export default function PricingPage() {
                     >
                       <span className="font-medium">{policy.period}</span>
                       <span
-                        className={`font-semibold ${
+                        className={`font-semibold text-lg ${
                           policy.fee === "無料"
                             ? "text-primary"
                             : "text-text-sub"
@@ -418,12 +477,6 @@ export default function PricingPage() {
                       </span>
                     </motion.div>
                   ))}
-                </div>
-
-                <div className="mt-8 p-4 bg-secondary/10 rounded-lg">
-                  <p className="text-sm text-text-sub">
-                    ※ やむを得ない事情（天候不良、緊急事態等）の場合はご相談ください
-                  </p>
                 </div>
               </CardContent>
             </Card>
