@@ -55,7 +55,8 @@ export default function Home() {
             src={topSlide}
             alt="キャンピングカーで家族旅行"
             fill
-            className="object-cover brightness-50"
+            sizes="100vw"
+            className="object-cover object-center brightness-50"
             priority
             placeholder="blur"
           />

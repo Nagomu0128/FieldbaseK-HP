@@ -122,12 +122,13 @@ export default function VehiclePage() {
       <StructuredData data={breadcrumbData} />
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
         {/* Hero Section */}
-        <section className="relative h-[60vh] min-h-[400px] overflow-hidden">
+        <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
           <Image
             src={topSlide}
             alt="ナッツRV ジョリビー"
             fill
-            className="object-cover brightness-75"
+            sizes="100vw"
+            className="object-cover object-center brightness-75"
             priority
             placeholder="blur"
           />
@@ -138,12 +139,12 @@ export default function VehiclePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-center text-white"
+              className="text-center text-white px-2"
             >
-              <h1 className="text-5xl md:text-6xl font-bold mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
                 ナッツRV ジョリビー
               </h1>
-              <p className="text-xl md:text-2xl text-gray-200">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
                 日本最大級キャンピングカービルダーが手がける、コンパクト＆高機能キャブコン
               </p>
             </motion.div>
