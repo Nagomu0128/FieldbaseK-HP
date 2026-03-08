@@ -101,7 +101,7 @@ export default function ContactPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center py-20">
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center py-10 sm:py-20 px-4">
         <Container>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -109,17 +109,17 @@ export default function ContactPage() {
             transition={{ duration: 0.5 }}
           >
             <Card className="max-w-2xl mx-auto text-center shadow-2xl">
-              <CardContent className="p-12">
+              <CardContent className="p-6 sm:p-8 md:p-12">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                  className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6"
+                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6"
                 >
-                  <CheckCircle className="w-12 h-12 text-white" />
+                  <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white" />
                 </motion.div>
-                <h2 className="text-3xl font-bold mb-4">送信完了</h2>
-                <p className="text-xl text-text-sub mb-8">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">送信完了</h2>
+                <p className="text-base sm:text-lg md:text-xl text-text-sub mb-6 sm:mb-8">
                   お問い合わせありがとうございます。
                   <br />
                   内容を確認次第、担当者よりご連絡させていただきます。
@@ -141,12 +141,13 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
+      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1920&q=80"
           alt="お問い合わせ"
           fill
-          className="object-cover brightness-50"
+          sizes="100vw"
+          className="object-cover object-center brightness-50"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -156,12 +157,12 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center text-white"
+            className="text-center text-white px-2"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
               お問い合わせ
             </h1>
-            <p className="text-xl md:text-2xl text-gray-200">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
               ご質問・ご予約など、お気軽にお問い合わせください
             </p>
           </motion.div>
@@ -169,9 +170,9 @@ export default function ContactPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-20">
+      <section className="py-10 sm:py-14 md:py-20">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
             {/* Contact Form */}
             <div className="lg:col-span-2">
               <motion.div
@@ -181,8 +182,8 @@ export default function ContactPage() {
                 transition={{ duration: 0.6 }}
               >
                 <Card className="shadow-2xl">
-                  <CardContent className="p-8">
-                    <h2 className="text-3xl font-bold mb-6">
+                  <CardContent className="p-4 sm:p-6 md:p-8">
+                    <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
                       お問い合わせフォーム
                     </h2>
 

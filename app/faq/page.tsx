@@ -178,12 +178,13 @@ export default function FAQPage() {
       <StructuredData data={faqStructuredData} />
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
+      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80"
           alt="よくある質問"
           fill
-          className="object-cover brightness-50"
+          sizes="100vw"
+          className="object-cover object-center brightness-50"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -193,13 +194,13 @@ export default function FAQPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center text-white"
+            className="text-center text-white px-2"
           >
-            <HelpCircle className="w-16 h-16 mx-auto mb-6" />
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            <HelpCircle className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mx-auto mb-3 sm:mb-4 md:mb-6" />
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
               よくある質問
             </h1>
-            <p className="text-xl md:text-2xl text-gray-200">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
               お客様からよくいただくご質問にお答えします
             </p>
           </motion.div>

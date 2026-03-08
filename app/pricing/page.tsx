@@ -63,12 +63,13 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
+      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=1920&q=80"
           alt="料金プラン"
           fill
-          className="object-cover brightness-50"
+          sizes="100vw"
+          className="object-cover object-center brightness-50"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -78,10 +79,10 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center text-white"
+            className="text-center text-white px-2"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">料金プラン</h1>
-            <p className="text-xl md:text-2xl text-gray-200">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">料金プラン</h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
               明確でわかりやすい料金体系
             </p>
           </motion.div>
