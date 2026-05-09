@@ -23,20 +23,19 @@ const contactInfo = [
   {
     icon: Mail,
     title: "メール",
-    content: "info@fieldbase-k.jp（要設定）",
-    link: "mailto:info@fieldbase-k.jp",
+    content: "fieldbasek@gmail.com",
   },
   {
     icon: Phone,
     title: "電話",
-    content: "000-0000-0000（要設定）",
-    link: "tel:0000000000",
+    content: "070-9188-3811",
+    link: "tel:070-9188-3811",
   },
   {
     icon: MapPin,
     title: "所在地",
-    content: "所在地情報（要設定）",
-    link: "#",
+    content: "滋賀県大津市松山町 6-31",
+    link: "https://maps.app.goo.gl/hH7iRoNHY2vwYKYo7"
   },
 ];
 
