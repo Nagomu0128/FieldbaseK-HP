@@ -1,0 +1,14 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Googlebot
+User-agent: Googlebot
+Allow: /
+
+# Host
+Host: https://fieldbase-k.jp
+
+# Sitemaps
+Sitemap: https://fieldbase-k.jp/sitemap.xml
