@@ -48,10 +48,15 @@ export default function Footer() {
 
             {/* Contact Info */}
             <div className="space-y-2 text-sm text-text-sub">
-              <div className="flex items-center space-x-2">
+              <a
+                href="https://maps.app.goo.gl/PVzS5o7RfNm7uu8F7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:text-primary transition-colors"
+              >
                 <MapPin className="w-4 h-4" />
                 <span>滋賀県大津市松山町 6-31</span>
-              </div>
+              </a>
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
                 <span>070-9188-3811</span>

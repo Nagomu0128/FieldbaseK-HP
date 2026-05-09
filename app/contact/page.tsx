@@ -35,7 +35,7 @@ const contactInfo = [
     icon: MapPin,
     title: "所在地",
     content: "滋賀県大津市松山町 6-31",
-    link: "https://maps.app.goo.gl/hH7iRoNHY2vwYKYo7"
+    link: "https://maps.app.goo.gl/PVzS5o7RfNm7uu8F7"
   },
 ];
 
