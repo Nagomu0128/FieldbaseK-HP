@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "FieldBase-K | キャンピングカーレンタル",
     template: "%s | FieldBase-K",
   },
-  description: "FieldBase-Kは、家族での思い出づくりに最適なキャンピングカーレンタルサービスです。初めての方でも安心してご利用いただけるよう、丁寧なサポートを提供しています。清潔で快適な車内、充実の装備、24時間サポート体制で安心のキャンプ旅行をお楽しみいただけます。",
+  description: "FieldBase-Kは、家族での思い出づくりに最適なキャンピングカーレンタルサービスです。初めての方でも安心してご利用いただけるよう、丁寧なサポートを提供しています。清潔で快適な車内、充実の装備、親身なサポート体制で安心のキャンプ旅行をお楽しみいただけます。",
   keywords: [
     "キャンピングカー",
     "キャンピングカーレンタル",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     url: "https://fieldbase-k.jp",
     siteName: "FieldBase-K",
     title: "FieldBase-K | キャンピングカーレンタル",
-    description: "家族での思い出づくりに最適なキャンピングカーレンタルサービス。初めての方でも安心、24時間サポート付き。",
+    description: "家族での思い出づくりに最適なキャンピングカーレンタルサービス。初めての方でも安心、丁寧なサポート付き。",
     images: [
       {
         url: "/og-image.jpg",

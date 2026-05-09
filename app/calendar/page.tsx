@@ -7,21 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Container from "@/components/Container";
 import {
-  Calendar as CalendarIcon,
   Check,
   X,
   AlertCircle,
   ArrowRight,
-  Clock,
 } from "lucide-react";
-
-// Google Calendar の埋め込みURL（実際のカレンダーIDに置き換える必要があります）
-const GOOGLE_CALENDAR_EMBED_URL = "YOUR_GOOGLE_CALENDAR_EMBED_URL_HERE";
+import AvailabilityCalendar from "@/components/AvailabilityCalendar";
 
 const legend = [
   { status: "available", label: "空き", color: "bg-green-500", icon: Check },
   { status: "booked", label: "予約済み", color: "bg-red-500", icon: X },
-  { status: "pending", label: "仮予約", color: "bg-yellow-500", icon: Clock },
 ];
 
 const instructions = [
@@ -121,52 +116,20 @@ export default function CalendarPage() {
           >
             <Card className="overflow-hidden shadow-2xl">
               <CardContent className="p-0">
-                {/* Google Calendar Embed Placeholder */}
-                <div className="relative w-full" style={{ paddingBottom: "75%" }}>
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
-                    <div className="text-center p-8">
-                      <CalendarIcon className="w-20 h-20 text-primary mx-auto mb-6" />
-                      <h3 className="text-2xl font-bold mb-4">
-                        Google カレンダー連携
-                      </h3>
-                      <p className="text-text-sub mb-6 max-w-md">
-                        実際の運用時には、Google カレンダーがここに表示されます。
-                        <br />
-                        <br />
-                        下記のURLを設定してください：
-                        <br />
-                        <code className="text-xs bg-gray-200 px-2 py-1 rounded">
-                          {GOOGLE_CALENDAR_EMBED_URL}
-                        </code>
-                      </p>
-
-                      {/* 実際の Google Calendar 埋め込みコード（コメントアウト） */}
-                      {/*
-                      <iframe
-                        src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID&ctz=Asia%2FTokyo"
-                        style={{ border: 0 }}
-                        width="100%"
-                        height="600"
-                        frameBorder="0"
-                        scrolling="no"
-                      ></iframe>
-                      */}
-
-                      <div className="mt-8">
-                        <Button
-                          asChild
-                          className="bg-gradient-to-r from-primary to-primary-dark"
-                        >
-                          <Link href="/contact">
-                            空き状況を問い合わせる <ArrowRight className="ml-2 w-5 h-5" />
-                          </Link>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <AvailabilityCalendar />
               </CardContent>
             </Card>
+
+            <div className="text-center mt-8">
+              <Button
+                asChild
+                className="bg-gradient-to-r from-primary to-primary-dark"
+              >
+                <Link href="/contact">
+                  空き状況を問い合わせる <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+            </div>
           </motion.div>
         </Container>
       </section>

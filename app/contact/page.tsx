@@ -23,20 +23,19 @@ const contactInfo = [
   {
     icon: Mail,
     title: "メール",
-    content: "info@fieldbase-k.jp（要設定）",
-    link: "mailto:info@fieldbase-k.jp",
+    content: "fieldbasek@gmail.com",
   },
   {
     icon: Phone,
     title: "電話",
-    content: "000-0000-0000（要設定）",
-    link: "tel:0000000000",
+    content: "070-9188-3811",
+    link: "tel:070-9188-3811",
   },
   {
     icon: MapPin,
     title: "所在地",
-    content: "所在地情報（要設定）",
-    link: "#",
+    content: "滋賀県大津市松山町 6-31",
+    link: "https://maps.app.goo.gl/PVzS5o7RfNm7uu8F7"
   },
 ];
 
@@ -58,6 +57,7 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -71,32 +71,52 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Formspree または他のフォームサービスのエンドポイントに送信
-    // 実装例（Formspreeを使用する場合）:
-    /*
     try {
-      const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      const response = await fetch("https://formspree.io/f/xykonapw", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          お名前: formData.name,
+          メールアドレス: formData.email,
+          電話番号: formData.phone,
+          利用希望日: formData.date,
+          利用日数: formData.days,
+          お問い合わせ内容: formData.message,
+          _replyto: formData.email,
+          _subject: `【FieldBase-K】お問い合わせ：${formData.name}様`,
+        }),
       });
 
       if (response.ok) {
         setIsSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          date: "",
+          days: "",
+          message: "",
+        });
+      } else {
+        const data = await response.json().catch(() => null);
+        const message =
+          data?.errors?.map((err: { message: string }) => err.message).join(", ") ??
+          "送信に失敗しました。お手数ですが時間をおいて再度お試しください。";
+        setSubmitError(message);
       }
     } catch (error) {
-      console.error("Error:", error);
-    }
-    */
-
-    // デモ用の遅延
-    setTimeout(() => {
+      console.error("Contact form submission error:", error);
+      setSubmitError(
+        "送信中にエラーが発生しました。ネットワーク接続をご確認の上、再度お試しください。"
+      );
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 1500);
+    }
   };
 
   if (isSubmitted) {
@@ -293,6 +313,12 @@ export default function ContactPage() {
                         />
                       </div>
 
+                      {submitError && (
+                        <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                          {submitError}
+                        </div>
+                      )}
+
                       <Button
                         type="submit"
                         disabled={isSubmitting}
@@ -373,14 +399,14 @@ export default function ContactPage() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-text-sub">平日</span>
-                        <span className="font-semibold">10:00 - 18:00（要確認）</span>
+                        <span className="font-semibold">9:00 - 18:00</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-text-sub">土日祝</span>
-                        <span className="font-semibold">10:00 - 18:00（要確認）</span>
+                        <span className="font-semibold">9:00 - 18:00</span>
                       </div>
                       <div className="pt-3 border-t border-gray-200">
-                        <span className="text-text-sub">定休日：要設定</span>
+                        <span className="text-text-sub">不定休</span>
                       </div>
                     </div>
                   </CardContent>
