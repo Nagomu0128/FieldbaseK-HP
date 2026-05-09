@@ -41,7 +41,7 @@ const features = [
 const stats = [
   { value: "1", label: "台の厳選車両", suffix: "" },
   { value: "100", label: "満足度", suffix: "%" },
-  { value: "24", label: "サポート体制", suffix: "時間" },
+  { value: "安心", label: "充実のサポート体制", suffix: "" },
 ];
 
 export default function Home() {
