@@ -57,6 +57,7 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -70,32 +71,52 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Formspree または他のフォームサービスのエンドポイントに送信
-    // 実装例（Formspreeを使用する場合）:
-    /*
     try {
-      const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      const response = await fetch("https://formspree.io/f/xykonapw", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          お名前: formData.name,
+          メールアドレス: formData.email,
+          電話番号: formData.phone,
+          利用希望日: formData.date,
+          利用日数: formData.days,
+          お問い合わせ内容: formData.message,
+          _replyto: formData.email,
+          _subject: `【FieldBase-K】お問い合わせ：${formData.name}様`,
+        }),
       });
 
       if (response.ok) {
         setIsSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          date: "",
+          days: "",
+          message: "",
+        });
+      } else {
+        const data = await response.json().catch(() => null);
+        const message =
+          data?.errors?.map((err: { message: string }) => err.message).join(", ") ??
+          "送信に失敗しました。お手数ですが時間をおいて再度お試しください。";
+        setSubmitError(message);
       }
     } catch (error) {
-      console.error("Error:", error);
-    }
-    */
-
-    // デモ用の遅延
-    setTimeout(() => {
+      console.error("Contact form submission error:", error);
+      setSubmitError(
+        "送信中にエラーが発生しました。ネットワーク接続をご確認の上、再度お試しください。"
+      );
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 1500);
+    }
   };
 
   if (isSubmitted) {
@@ -291,6 +312,12 @@ export default function ContactPage() {
                           placeholder="ご質問やご要望など、お気軽にお書きください"
                         />
                       </div>
+
+                      {submitError && (
+                        <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                          {submitError}
+                        </div>
+                      )}
 
                       <Button
                         type="submit"
