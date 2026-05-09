@@ -15,7 +15,7 @@ const footerLinks = {
   ],
   legal: [
     { href: "/privacy", label: "プライバシーポリシー" },
-    { href: "/terms", label: "利用規約" },
+    { href: "/rental-terms.pdf", label: "貸渡約款", external: true },
   ],
 };
 
@@ -50,15 +50,15 @@ export default function Footer() {
             <div className="space-y-2 text-sm text-text-sub">
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4" />
-                <span>所在地情報（要設定）</span>
+                <span>滋賀県大津市松山町 6-31</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
-                <span>電話番号（要設定）</span>
+                <span>070-9188-3811</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="w-4 h-4" />
-                <span>メールアドレス（要設定）</span>
+                <span>fieldbasek@gmail.com</span>
               </div>
             </div>
 
@@ -112,12 +112,23 @@ export default function Footer() {
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-text-sub hover:text-primary transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
+                  {link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-sub hover:text-primary transition-colors text-sm"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-text-sub hover:text-primary transition-colors text-sm"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

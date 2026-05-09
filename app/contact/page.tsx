@@ -372,14 +372,14 @@ export default function ContactPage() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-text-sub">平日</span>
-                        <span className="font-semibold">10:00 - 18:00（要確認）</span>
+                        <span className="font-semibold">9:00 - 18:00</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-text-sub">土日祝</span>
-                        <span className="font-semibold">10:00 - 18:00（要確認）</span>
+                        <span className="font-semibold">9:00 - 18:00</span>
                       </div>
                       <div className="pt-3 border-t border-gray-200">
-                        <span className="text-text-sub">定休日：要設定</span>
+                        <span className="text-text-sub">不定休</span>
                       </div>
                     </div>
                   </CardContent>
