@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Breadcrumb from "@/components/seo/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "よくある質問（FAQ）",
-  description: "FieldBase-Kのキャンピングカーレンタルに関するよくある質問。予約方法、料金、車両スペック、利用当日の流れ、キャンセルポリシーなど、初めての方の疑問にお答えします。",
-  keywords: ["キャンピングカー", "FAQ", "よくある質問", "Q&A", "ヘルプ", "予約方法", "初心者"],
+  description: "FieldBase-K（滋賀・大津のキャンピングカーレンタル）に関するよくある質問。予約方法、料金、車両スペック、利用当日の流れ、キャンセルポリシーなど、初めての方の疑問にお答えします。",
+  keywords: ["キャンピングカー FAQ", "よくある質問", "Q&A", "予約方法", "初心者", "キャンセルポリシー", "キャンピングカーレンタル 滋賀"],
   openGraph: {
     title: "よくある質問（FAQ） | FieldBase-K",
     description: "予約、料金、車両、利用方法など、お客様からよくいただくご質問にお答えします",
@@ -28,5 +29,10 @@ export default function FAQLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <Breadcrumb items={[{ name: "よくある質問", href: "/faq" }]} />
+      {children}
+    </>
+  );
 }
