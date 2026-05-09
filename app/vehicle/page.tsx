@@ -79,14 +79,16 @@ export default function VehiclePage() {
 
   const productData = {
     "@context": "https://schema.org",
-    "@type": "Product",
-    name: "FieldBase-K キャンピングカーレンタル ナッツRV ジョリビー",
+    "@type": "Vehicle",
+    name: "ナッツRV ジョリビー（FieldBase-Kレンタル）",
     description:
-      "ナッツRV ジョリビー。コンパクトなキャブコンながら、エボライト＆リチウムイオンバッテリー、家庭用エアコン、FFヒーター搭載の充実装備。",
-    brand: {
-      "@type": "Brand",
-      name: "FieldBase-K",
-    },
+      "ナッツRV ジョリビー。コンパクトなキャブコンながら、エボライト＆リチウムイオンバッテリー、家庭用エアコン、FFヒーター搭載の充実装備。乗車定員6名、就寝定員5名。",
+    brand: { "@type": "Brand", name: "ナッツRV" },
+    model: "ジョリビー（JolyBee）",
+    vehicleConfiguration: "キャブコン",
+    numberOfDoors: 4,
+    seatingCapacity: 6,
+    image: "https://fieldbase-k.jp/og-image.jpg",
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: "JPY",
@@ -94,6 +96,7 @@ export default function VehiclePage() {
       highPrice: "22000",
       offerCount: "4",
       availability: "https://schema.org/InStock",
+      url: "https://fieldbase-k.jp/pricing",
     },
   };
 

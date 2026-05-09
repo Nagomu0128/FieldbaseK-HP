@@ -18,14 +18,18 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://fieldbase-k.jp'),
   title: {
-    default: "FieldBase-K | キャンピングカーレンタル",
+    default: "キャンピングカーレンタル 滋賀・大津 | FieldBase-K",
     template: "%s | FieldBase-K",
   },
-  description: "FieldBase-Kは、家族での思い出づくりに最適なキャンピングカーレンタルサービスです。初めての方でも安心してご利用いただけるよう、丁寧なサポートを提供しています。清潔で快適な車内、充実の装備、親身なサポート体制で安心のキャンプ旅行をお楽しみいただけます。",
+  description: "滋賀県大津市のキャンピングカーレンタル「FieldBase-K」。ナッツRV ジョリビーを1台貸し切りでご提供。1泊2日16,500円〜。琵琶湖周辺・関西エリアでのキャンプや家族旅行に最適。初めての方も親身にサポートいたします。",
   keywords: [
-    "キャンピングカー",
     "キャンピングカーレンタル",
+    "キャンピングカー 滋賀",
+    "キャンピングカー 大津",
+    "キャンピングカー 関西",
+    "ナッツRV ジョリビー",
     "レンタルキャンピングカー",
+    "琵琶湖 キャンプ",
     "家族旅行",
     "アウトドア",
     "車中泊",
@@ -54,8 +58,8 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     url: "https://fieldbase-k.jp",
     siteName: "FieldBase-K",
-    title: "FieldBase-K | キャンピングカーレンタル",
-    description: "家族での思い出づくりに最適なキャンピングカーレンタルサービス。初めての方でも安心、丁寧なサポート付き。",
+    title: "キャンピングカーレンタル 滋賀・大津 | FieldBase-K",
+    description: "滋賀県大津市のキャンピングカーレンタル。ナッツRV ジョリビーで琵琶湖・関西エリアの旅へ。1泊2日16,500円〜、初めての方も親身にサポート。",
     images: [
       {
         url: "/og-image.jpg",
@@ -67,16 +71,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FieldBase-K | キャンピングカーレンタル",
-    description: "家族での思い出づくりに最適なキャンピングカーレンタルサービス",
+    title: "キャンピングカーレンタル 滋賀・大津 | FieldBase-K",
+    description: "滋賀県大津市のキャンピングカーレンタル。ナッツRV ジョリビーで琵琶湖・関西エリアの旅へ。",
     images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: "https://fieldbase-k.jp",
   },
-  verification: {
-    google: "google-site-verification-code", // 要設定
-  },
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
 };
 
 import Header from "@/components/Header";
@@ -86,50 +90,59 @@ import StructuredData from "@/components/seo/StructuredData";
 const localBusinessData = {
   "@context": "https://schema.org",
   "@type": "AutoRental",
+  "@id": "https://fieldbase-k.jp/#business",
   name: "FieldBase-K",
-  description: "家族での思い出づくりに最適なキャンピングカーレンタルサービス",
+  description:
+    "滋賀県大津市のキャンピングカーレンタル。ナッツRV ジョリビーをご用意。家族旅行・キャンプに最適。",
   url: "https://fieldbase-k.jp",
-  telephone: "000-0000-0000", // 要設定
-  email: "info@fieldbase-k.jp", // 要設定
+  telephone: "+81-70-9188-3811",
+  email: "fieldbasek@gmail.com",
   address: {
     "@type": "PostalAddress",
     addressCountry: "JP",
-    addressRegion: "都道府県名", // 要設定
-    addressLocality: "市区町村名", // 要設定
-    streetAddress: "番地等", // 要設定
+    addressRegion: "滋賀県",
+    addressLocality: "大津市",
+    streetAddress: "松山町6-31",
+    postalCode: "520-0025",
   },
-  priceRange: "¥¥",
-  image: "https://fieldbase-k.jp/og-image.jpg",
-  sameAs: [
-    // SNSのURLを追加
-    // "https://www.facebook.com/fieldbasek",
-    // "https://www.instagram.com/fieldbasek",
+  areaServed: [
+    { "@type": "AdministrativeArea", name: "滋賀県" },
+    { "@type": "AdministrativeArea", name: "京都府" },
+    { "@type": "AdministrativeArea", name: "大阪府" },
+    { "@type": "AdministrativeArea", name: "関西" },
   ],
+  priceRange: "¥16,500〜",
+  image: "https://fieldbase-k.jp/og-image.jpg",
+  logo: "https://fieldbase-k.jp/og-image.jpg",
+  hasMap: "https://maps.app.goo.gl/PVzS5o7RfNm7uu8F7",
+  sameAs: [],
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      opens: "10:00",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "09:00",
       closes: "18:00",
     },
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5.0",
-    reviewCount: "1",
-  },
 };
 
 const websiteData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://fieldbase-k.jp/#website",
   name: "FieldBase-K",
+  alternateName: "フィールドベース・ケー",
   url: "https://fieldbase-k.jp",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: "https://fieldbase-k.jp/search?q={search_term_string}",
-    "query-input": "required name=search_term_string",
-  },
+  inLanguage: "ja",
+  publisher: { "@id": "https://fieldbase-k.jp/#business" },
 };
 
 export default function RootLayout({
