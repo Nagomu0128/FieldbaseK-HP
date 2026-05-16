@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     description: "滋賀県大津市のキャンピングカーレンタル。ナッツRV ジョリビーで琵琶湖・関西エリアの旅へ。1泊2日16,500円〜、初めての方も親身にサポート。",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "FieldBase-K キャンピングカーレンタル",
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "キャンピングカーレンタル 滋賀・大津 | FieldBase-K",
     description: "滋賀県大津市のキャンピングカーレンタル。ナッツRV ジョリビーで琵琶湖・関西エリアの旅へ。",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://fieldbase-k.jp",
@@ -112,8 +112,8 @@ const localBusinessData = {
     { "@type": "AdministrativeArea", name: "関西" },
   ],
   priceRange: "¥16,500〜",
-  image: "https://fieldbase-k.jp/og-image.jpg",
-  logo: "https://fieldbase-k.jp/og-image.jpg",
+  image: "https://fieldbase-k.jp/og-image.png",
+  logo: "https://fieldbase-k.jp/og-image.png",
   hasMap: "https://maps.app.goo.gl/PVzS5o7RfNm7uu8F7",
   sameAs: [],
   openingHoursSpecification: [
