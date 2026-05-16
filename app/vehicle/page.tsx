@@ -88,7 +88,7 @@ export default function VehiclePage() {
     vehicleConfiguration: "キャブコン",
     numberOfDoors: 4,
     seatingCapacity: 6,
-    image: "https://fieldbase-k.jp/og-image.jpg",
+    image: "https://fieldbase-k.jp/og-image.png",
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: "JPY",
