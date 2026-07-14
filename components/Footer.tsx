@@ -14,14 +14,18 @@ const footerLinks = {
     { href: "/contact", label: "お問い合わせ" },
   ],
   legal: [
-    { href: "/privacy", label: "プライバシーポリシー" },
+    { href: "/privacy-policy.pdf", label: "プライバシーポリシー", external: true },
     { href: "/rental-terms.pdf", label: "貸渡約款", external: true },
   ],
 };
 
 const socialLinks = [
   { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Instagram, href: "#", label: "Instagram" },
+  {
+    icon: Instagram,
+    href: "https://www.instagram.com/fieldbasek/",
+    label: "Instagram",
+  },
   { icon: Twitter, href: "#", label: "Twitter" },
 ];
 
@@ -69,18 +73,23 @@ export default function Footer() {
 
             {/* Social Links */}
             <div className="flex space-x-4 mt-6">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5 text-primary" />
-                </motion.a>
-              ))}
+              {socialLinks.map((social) => {
+                const isExternal = social.href.startsWith("http");
+                return (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
+                    aria-label={social.label}
+                  >
+                    <social.icon className="w-5 h-5 text-primary" />
+                  </motion.a>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -146,8 +155,19 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 pt-8 border-t border-gray-200"
+          className="mt-12 pt-8 border-t border-gray-200 space-y-4"
         >
+          <div className="text-center text-sm text-text-sub">
+            関連サイト：{" "}
+            <a
+              href="https://camping-cars.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-primary transition-colors"
+            >
+              キャンピングカースタイル
+            </a>
+          </div>
           <p className="text-center text-sm text-text-sub">
             &copy; {new Date().getFullYear()} FieldBase-K. All rights reserved.
           </p>
