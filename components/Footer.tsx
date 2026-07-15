@@ -176,10 +176,10 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="group flex max-w-2xl flex-col overflow-hidden rounded-2xl border border-line-dark bg-ink-soft transition-colors duration-300 hover:border-secondary sm:flex-row"
             >
-              <div className="relative aspect-[820/360] w-full shrink-0 bg-white sm:aspect-auto sm:w-64 sm:self-stretch">
+              <div className="relative aspect-[820/360] w-full shrink-0 bg-paper sm:aspect-auto sm:w-64">
                 <Image
                   src={campingCarsOgp}
-                  alt={relatedSite.name}
+                  alt=""
                   fill
                   sizes="(min-width: 640px) 256px, 100vw"
                   className="object-cover"
@@ -193,7 +193,10 @@ export default function Footer() {
                 <p className="line-clamp-2 text-xs leading-relaxed text-paper/55">
                   {relatedSite.description}
                 </p>
-                <p className="mt-1 flex items-center gap-1.5 font-en text-xs tracking-wide text-paper/40">
+                <p
+                  aria-hidden="true"
+                  className="mt-1 flex items-center gap-1.5 font-en text-xs tracking-wide text-paper/60"
+                >
                   {relatedSite.displayUrl}
                   <ArrowUpRight className="h-3.5 w-3.5 text-secondary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </p>
