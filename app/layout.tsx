@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_JP, Inter } from "next/font/google";
+import { Noto_Sans_JP, Zen_Kaku_Gothic_New, Outfit } from "next/font/google";
 import "./globals.css";
 
 const notoSansJP = Noto_Sans_JP({
@@ -9,8 +9,15 @@ const notoSansJP = Noto_Sans_JP({
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const zenKaku = Zen_Kaku_Gothic_New({
+  variable: "--font-zen-kaku",
+  subsets: ["latin"],
+  weight: ["700", "900"],
+  display: "swap",
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
   display: "swap",
 });
@@ -85,6 +92,7 @@ export const metadata: Metadata = {
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/motion/SmoothScroll";
 import StructuredData from "@/components/seo/StructuredData";
 
 const localBusinessData = {
@@ -157,11 +165,13 @@ export default function RootLayout({
         <StructuredData data={websiteData} />
       </head>
       <body
-        className={`${notoSansJP.variable} ${inter.variable} antialiased`}
+        className={`${notoSansJP.variable} ${zenKaku.variable} ${outfit.variable} antialiased`}
       >
-        <Header />
-        <main className="min-h-screen pt-20">{children}</main>
-        <Footer />
+        <SmoothScroll>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

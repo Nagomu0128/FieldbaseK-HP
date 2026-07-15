@@ -1,10 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import { getLenis } from "@/components/motion/SmoothScroll";
+import { cn } from "@/lib/utils";
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const navLinks = [
   { href: "/", label: "ホーム" },
@@ -17,147 +21,202 @@ const navLinks = [
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const lastY = useRef(0);
+  const pathname = usePathname();
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const y = window.scrollY;
+      setIsScrolled(y > 40);
+      // 下方向スクロールで隠し、上方向で出す
+      setIsHidden(y > 160 && y > lastY.current);
+      lastY.current = y;
     };
-
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // ルート遷移でメニューを閉じる
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  // メニュー展開中は慣性スクロールを停止
+  useEffect(() => {
+    const lenis = getLenis();
+    if (isMenuOpen) {
+      lenis?.stop();
+      document.documentElement.classList.add("lenis-stopped");
+    } else {
+      lenis?.start();
+      document.documentElement.classList.remove("lenis-stopped");
+    }
+    return () => {
+      getLenis()?.start();
+      document.documentElement.classList.remove("lenis-stopped");
+    };
+  }, [isMenuOpen]);
+
+  const onDark = !isScrolled || isMenuOpen;
+
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 transition-[transform,background-color,border-color,box-shadow] duration-500",
+          isHidden && !isMenuOpen && "-translate-y-full",
+          isScrolled && !isMenuOpen
+            ? "border-b border-border bg-paper/90 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent"
+        )}
+      >
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center"
-            >
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                FieldBase-K
-              </span>
-            </motion.div>
+          <Link
+            href="/"
+            className={cn(
+              "font-en text-xl font-bold tracking-tight transition-colors",
+              onDark ? "text-paper" : "text-ink"
+            )}
+          >
+            FieldBase-K
+            <span className="text-secondary">.</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link, index) => (
-              <motion.div
-                key={link.href}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
+          <nav className="hidden items-center gap-1 md:flex">
+            {navLinks.map((link) => {
+              const active = pathname === link.href;
+              return (
                 <Link
+                  key={link.href}
                   href={link.href}
-                  className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors relative group"
+                  className={cn(
+                    "group relative px-4 py-2 text-sm font-medium transition-colors",
+                    onDark
+                      ? "text-paper/80 hover:text-paper"
+                      : "text-ink/70 hover:text-ink",
+                    active && (onDark ? "text-paper" : "text-ink")
+                  )}
                 >
                   {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                  <span
+                    className={cn(
+                      "absolute inset-x-4 bottom-0.5 h-px origin-left scale-x-0 bg-secondary transition-transform duration-300 group-hover:scale-x-100",
+                      active && "scale-x-100"
+                    )}
+                  />
                 </Link>
-              </motion.div>
-            ))}
+              );
+            })}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          <div className="flex items-center gap-3">
+            {/* CTA */}
+            <Link
+              href="/contact"
+              className="hidden h-11 items-center gap-1.5 rounded-full bg-secondary px-6 text-sm font-bold text-ink transition-colors duration-300 hover:bg-secondary-dark md:inline-flex"
             >
-              <Button
-                asChild
-                className="bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300"
-              >
-                <Link href="/contact">お問い合わせ</Link>
-              </Button>
-            </motion.div>
-          </div>
+              お問い合わせ
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="メニュー"
-          >
-            <motion.div
-              animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
+            {/* Mobile Menu Button */}
+            <button
+              className={cn(
+                "flex h-11 w-11 items-center justify-center rounded-full border transition-colors md:hidden",
+                onDark
+                  ? "border-paper/25 text-paper"
+                  : "border-ink/15 text-ink"
               )}
-            </motion.div>
-          </button>
+              onClick={() => setIsMenuOpen((v) => !v)}
+              aria-label="メニュー"
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-white/95 backdrop-blur-md border-t"
+            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="fixed inset-0 z-40 flex flex-col bg-ink md:hidden"
           >
-            <nav className="px-4 py-6 space-y-2">
-              {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    className="block px-4 py-3 text-base font-medium text-foreground hover:bg-primary/10 rounded-lg transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+            <div className="flex-1 overflow-y-auto px-6 pb-10 pt-28" data-lenis-prevent>
+              <p aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
+                Menu
+              </p>
+              <nav className="space-y-1">
+                {navLinks.map((link, index) => {
+                  const active = pathname === link.href;
+                  return (
+                    <motion.div
+                      key={link.href}
+                      initial={reduced ? {} : { opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: 0.05 + index * 0.06,
+                        ease: EASE,
+                      }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        className={cn(
+                          "group flex items-baseline gap-4 border-b border-line-dark py-4",
+                          active ? "text-secondary" : "text-paper"
+                        )}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="font-en text-xs text-paper/40"
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="font-display text-2xl font-black tracking-tight">
+                          {link.label}
+                        </span>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navLinks.length * 0.05 }}
-                className="pt-4"
+                initial={reduced ? {} : { opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: EASE }}
+                className="mt-10"
               >
-                <Button
-                  asChild
-                  className="w-full bg-gradient-to-r from-primary to-primary-dark"
+                <Link
+                  href="/contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-secondary text-base font-bold text-ink"
                 >
-                  <Link
-                    href="/contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    お問い合わせ
-                  </Link>
-                </Button>
+                  お問い合わせ
+                  <ArrowUpRight className="h-5 w-5" />
+                </Link>
               </motion.div>
-            </nav>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   );
 }
