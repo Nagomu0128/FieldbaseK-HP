@@ -1,8 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import Image from "next/image";
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Mail,
+  Phone,
+  MapPin,
+  ArrowUpRight,
+} from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
+import campingCarsOgp from "@/assets/camping-cars-ogp.jpg";
+
+// 関連サイトの OGP 情報(https://camping-cars.jp/ の og:title / og:description より)
+const relatedSite = {
+  href: "https://camping-cars.jp/",
+  name: "キャンピングカースタイル",
+  title: "キャンピングカーの情報ならキャンピングカースタイル",
+  description:
+    "キャンピングカーの総合情報。キャンピングカーの車種紹介や新車情報、メーカー・ビルダー紹介など、買いたい人のための全国のキャンピングカー販売店を掲載。キャンピングカーの選び方や使い方、旅の仕方などご覧下さい。",
+  displayUrl: "camping-cars.jp",
+};
 
 const footerLinks = {
   pages: [
@@ -144,20 +164,47 @@ export default function Footer() {
           </Reveal>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line-dark pt-8 md:flex-row">
-          <div className="text-sm text-paper/50">
-            関連サイト：{" "}
+        {/* Related Site (OGP link card) */}
+        <Reveal>
+          <div className="mt-14 border-t border-line-dark pt-10">
+            <h4 className="mb-6 text-sm font-bold tracking-[0.18em] text-secondary">
+              関連サイト
+            </h4>
             <a
-              href="https://camping-cars.jp/"
+              href={relatedSite.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-4 transition-colors hover:text-secondary"
+              className="group flex max-w-2xl flex-col overflow-hidden rounded-2xl border border-line-dark bg-ink-soft transition-colors duration-300 hover:border-secondary sm:flex-row"
             >
-              キャンピングカースタイル
+              <div className="relative aspect-[820/360] w-full shrink-0 bg-white sm:aspect-auto sm:w-64 sm:self-stretch">
+                <Image
+                  src={campingCarsOgp}
+                  alt={relatedSite.name}
+                  fill
+                  sizes="(min-width: 640px) 256px, 100vw"
+                  className="object-cover"
+                  placeholder="blur"
+                />
+              </div>
+              <div className="flex min-w-0 flex-col justify-center gap-2 p-5 sm:p-6">
+                <p className="font-bold leading-snug text-paper transition-colors duration-300 group-hover:text-secondary">
+                  {relatedSite.title}
+                </p>
+                <p className="line-clamp-2 text-xs leading-relaxed text-paper/55">
+                  {relatedSite.description}
+                </p>
+                <p className="mt-1 flex items-center gap-1.5 font-en text-xs tracking-wide text-paper/40">
+                  {relatedSite.displayUrl}
+                  <ArrowUpRight className="h-3.5 w-3.5 text-secondary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </p>
+              </div>
             </a>
           </div>
-          <p className="text-sm text-paper/50">
+        </Reveal>
+
+        {/* Bottom Bar */}
+        <div className="mt-14 border-t border-line-dark pt-8">
+          <p className="text-center text-sm text-paper/50">
             &copy; {new Date().getFullYear()} FieldBase-K. All rights reserved.
           </p>
         </div>
