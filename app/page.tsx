@@ -15,6 +15,7 @@ import {
   Star,
 } from "lucide-react";
 import topSlide from "@/assets/top_slide01.jpg";
+import topHero from "@/assets/top_hero.jpg";
 import exteriorSlide01 from "@/assets/exterior_box02_slide01.jpg";
 
 const features = [
@@ -52,8 +53,8 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={topSlide}
-            alt="キャンピングカーで家族旅行"
+            src={topHero}
+            alt="滋賀・大津のレンタルキャンピングカー ナッツRV ジョリビー"
             fill
             sizes="100vw"
             className="object-cover object-center brightness-50"
@@ -72,10 +73,10 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
-                家族の思い出を
+                滋賀・大津の
                 <br />
                 <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                  特別な旅へ
+                  レンタルキャンピングカー
                 </span>
               </h1>
             </motion.div>
@@ -86,9 +87,9 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-base sm:text-xl md:text-2xl mb-8 sm:mb-12 text-gray-200 max-w-3xl mx-auto px-2"
             >
-              FieldBase-Kのキャンピングカーで、
+              ナッツRV ジョリビーを1日16,500円〜でレンタル。
               <br className="hidden md:block" />
-              いつもと違う冒険を始めましょう
+              初めての方も、個人オーナーが丁寧にサポートします。
             </motion.p>
 
             <motion.div
