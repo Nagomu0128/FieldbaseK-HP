@@ -1,17 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import Container from "@/components/Container";
-import {
-  Check,
-  X,
-  AlertCircle,
-  ArrowRight,
-} from "lucide-react";
+import Reveal from "@/components/motion/Reveal";
+import PageIntro from "@/components/site/PageIntro";
+import SectionHeading from "@/components/site/SectionHeading";
+import { Check, X, AlertCircle, ArrowRight } from "lucide-react";
 import AvailabilityCalendar from "@/components/AvailabilityCalendar";
 
 const legend = [
@@ -46,215 +41,138 @@ const notes = [
 
 export default function CalendarPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=1920&q=80"
-          alt="空き状況カレンダー"
-          fill
-          sizes="100vw"
-          className="object-cover object-center brightness-50"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-        <Container className="relative h-full flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white px-2"
-          >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
-              空き状況カレンダー
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
-              リアルタイムの予約状況をご確認いただけます
-            </p>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* Legend Section */}
-      <section className="py-12 bg-white">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-wrap justify-center gap-6"
-          >
-            {legend.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="flex items-center gap-3 bg-gray-50 px-6 py-3 rounded-full shadow-md"
-              >
-                <div className={`w-4 h-4 ${item.color} rounded-full`} />
-                <span className="font-medium">{item.label}</span>
-                <item.icon className="w-5 h-5 text-text-sub" />
-              </motion.div>
-            ))}
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* Calendar Section */}
-      <section className="py-20">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-12"
-          >
-            <Card className="overflow-hidden shadow-2xl">
-              <CardContent className="p-0">
-                <AvailabilityCalendar />
-              </CardContent>
-            </Card>
-
-            <div className="text-center mt-8">
-              <Button
-                asChild
-                className="bg-gradient-to-r from-primary to-primary-dark"
-              >
-                <Link href="/contact">
-                  空き状況を問い合わせる <ArrowRight className="ml-2 w-5 h-5" />
-                </Link>
-              </Button>
+    <>
+      <PageIntro
+        eyebrow="Availability"
+        title="空き状況カレンダー"
+        lead="リアルタイムの予約状況をご確認いただけます"
+      >
+        <div className="mt-8 flex flex-wrap gap-3">
+          {legend.map((item) => (
+            <div
+              key={item.status}
+              className="flex items-center gap-2.5 rounded-full border border-line-dark px-5 py-2.5"
+            >
+              <span className={`h-2.5 w-2.5 rounded-full ${item.color}`} />
+              <span className="text-sm font-medium text-paper/85">
+                {item.label}
+              </span>
             </div>
-          </motion.div>
+          ))}
+        </div>
+      </PageIntro>
+
+      {/* Calendar */}
+      <section className="bg-paper py-24 md:py-32">
+        <Container>
+          <Reveal>
+            <div className="overflow-hidden rounded-2xl border border-border bg-white">
+              <AvailabilityCalendar />
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.15} className="mt-10 text-center">
+            <Button asChild size="lg">
+              <Link href="/contact">
+                空き状況を問い合わせる <ArrowRight className="!size-5" />
+              </Link>
+            </Button>
+          </Reveal>
         </Container>
       </section>
 
-      {/* How to Reserve Section */}
-      <section className="py-20 bg-white">
+      {/* How to Reserve */}
+      <section className="border-y border-border bg-white py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">ご予約の流れ</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              3ステップで簡単予約
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="How to Reserve"
+            title="ご予約の流れ"
+            lead="3ステップで簡単予約"
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 gap-x-10 gap-y-14 md:grid-cols-3">
             {instructions.map((instruction, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="h-full relative overflow-hidden hover:shadow-xl transition-all duration-300">
-                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-secondary" />
-                  <CardContent className="p-6 pt-8">
-                    <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4 mx-auto shadow-lg">
-                      {instruction.step}
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-center">
-                      {instruction.title}
-                    </h3>
-                    <p className="text-text-sub text-center">
-                      {instruction.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Reveal key={instruction.step} delay={index * 0.12}>
+                <div className="group h-full border-t-2 border-ink pt-7 transition-transform duration-500 hover:-translate-y-1.5">
+                  <span
+                    aria-hidden="true"
+                    className="font-en text-4xl font-semibold tracking-tight text-border transition-colors duration-300 group-hover:text-secondary md:text-5xl"
+                  >
+                    {String(instruction.step).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-5 font-display text-xl font-black leading-snug">
+                    {instruction.title}
+                  </h3>
+                  <p className="mt-3 leading-relaxed text-text-sub">
+                    {instruction.description}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Notes Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      {/* Notes */}
+      <section className="bg-paper py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="max-w-4xl mx-auto border-2 border-secondary/20 bg-secondary/5">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-6 flex items-center">
-                  <AlertCircle className="w-6 h-6 text-secondary mr-3" />
-                  ご予約時の注意事項
-                </h3>
-                <ul className="space-y-3">
-                  {notes.map((note, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.05 }}
-                      className="flex items-start"
-                    >
-                      <span className="text-secondary mr-3 mt-1">•</span>
-                      <span className="text-text-sub">{note}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <Reveal>
+            <div className="mx-auto max-w-4xl rounded-2xl border-l-4 border-secondary bg-white p-8 md:p-10">
+              <h3 className="flex items-center gap-3 font-display text-xl font-black md:text-2xl">
+                <AlertCircle className="h-6 w-6 shrink-0 text-secondary" />
+                ご予約時の注意事項
+              </h3>
+              <ul className="mt-6 space-y-3">
+                {notes.map((note) => (
+                  <li key={note} className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-secondary"
+                    />
+                    <span className="leading-relaxed text-text-sub">
+                      {note}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
         </Container>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary via-primary-dark to-primary">
+      {/* CTA */}
+      <section className="bg-ink py-24 text-paper md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center text-white"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <Reveal className="text-center">
+            <p aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
+              Contact
+            </p>
+            <h2 className="font-display text-3xl font-black tracking-tight md:text-5xl">
               ご希望の日程は見つかりましたか？
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="mt-5 text-paper/65 md:text-lg">
               お問い合わせフォームから、お気軽にご連絡ください
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="bg-secondary hover:bg-secondary-dark text-white hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6"
-              >
+            <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+              <Button asChild variant="secondary" size="lg">
                 <Link href="/contact">
-                  お問い合わせ <ArrowRight className="ml-2 w-5 h-5" />
+                  お問い合わせ <ArrowRight className="!size-5" />
                 </Link>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="outline"
-                className="bg-white/10 backdrop-blur-md border-white/30 hover:bg-white/20 text-white text-lg px-8 py-6"
+                className="border-paper/40 text-paper hover:opacity-100 hover:border-secondary hover:text-secondary"
               >
                 <Link href="/pricing">
-                  料金を見る <ArrowRight className="ml-2 w-5 h-5" />
+                  料金を見る <ArrowRight className="!size-5" />
                 </Link>
               </Button>
             </div>
-          </motion.div>
+          </Reveal>
         </Container>
       </section>
-    </div>
+    </>
   );
 }

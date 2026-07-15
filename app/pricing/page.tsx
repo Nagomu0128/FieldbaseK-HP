@@ -1,12 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Container from "@/components/Container";
-import { Check, X, Calendar, ArrowRight, AlertCircle, Clock, Percent } from "lucide-react";
+import Reveal from "@/components/motion/Reveal";
+import PageIntro from "@/components/site/PageIntro";
+import SectionHeading from "@/components/site/SectionHeading";
+import {
+  Check,
+  X,
+  Calendar,
+  ArrowRight,
+  AlertCircle,
+  Clock,
+} from "lucide-react";
 
 const cancellationPolicy = [
   { period: "出発日の8日前まで", fee: "無料" },
@@ -28,6 +35,19 @@ const notIncluded = [
   "高速道路料金",
   "駐車場料金",
   "キャンプ場利用料",
+];
+
+const discountTiers = [
+  { days: "3日以上", discount: "5%" },
+  { days: "5日以上", discount: "10%" },
+  { days: "7日以上", discount: "15%" },
+  { days: "10日以上", discount: "20%" },
+];
+
+const basicNotes = [
+  "ショート料金は15時〜18時までの午後引き渡し、または9:00〜12:00までの翌朝返却の場合に適用されます。",
+  "貸出料金には自動車保険料を含んでおります。",
+  "ペットの同乗はお断りさせていただいています。",
 ];
 
 const simulations = [
@@ -61,470 +81,360 @@ const simulations = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=1920&q=80"
-          alt="料金プラン"
-          fill
-          sizes="100vw"
-          className="object-cover object-center brightness-50"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+    <>
+      <PageIntro
+        eyebrow="Pricing"
+        title="料金プラン"
+        lead="明確でわかりやすい料金体系"
+      />
 
-        <Container className="relative h-full flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white px-2"
-          >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">料金プラン</h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
-              明確でわかりやすい料金体系
-            </p>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* Basic Pricing Section */}
-      <section className="py-20">
+      {/* Basic Pricing */}
+      <section className="bg-paper py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">基本料金</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              基本の貸出時間は9時〜18時となります（税込）
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="Basic Rate"
+            title="基本料金"
+            lead="基本の貸出時間は9時〜18時となります（税込）"
+          />
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="max-w-3xl mx-auto shadow-xl">
-              <CardContent className="p-8">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-center">
-                    <thead>
-                      <tr className="border-b-2 border-primary/20">
-                        <th className="py-4 px-4 text-left font-semibold text-text-sub"></th>
-                        <th className="py-4 px-4 font-semibold text-lg">一日料金</th>
-                        <th className="py-4 px-4 font-semibold text-lg">ショート料金</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-gray-200">
-                        <td className="py-5 px-4 text-left font-semibold text-lg">平日</td>
-                        <td className="py-5 px-4">
-                          <span className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                            ¥16,500
-                          </span>
-                        </td>
-                        <td className="py-5 px-4">
-                          <span className="text-3xl font-bold text-primary">
-                            ¥11,000
-                          </span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-5 px-4 text-left font-semibold text-lg">土日祝</td>
-                        <td className="py-5 px-4">
-                          <span className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                            ¥22,000
-                          </span>
-                        </td>
-                        <td className="py-5 px-4">
-                          <span className="text-3xl font-bold text-primary">
-                            ¥11,000
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+          <Reveal>
+            <div className="mx-auto max-w-3xl overflow-x-auto">
+              <table className="w-full min-w-[480px] text-center">
+                <thead>
+                  <tr className="border-b-2 border-ink">
+                    <th className="py-4 pr-4 text-left text-sm font-medium text-text-sub"></th>
+                    <th className="px-4 py-4 text-eyebrow text-primary">
+                      一日料金
+                    </th>
+                    <th className="px-4 py-4 text-eyebrow text-primary">
+                      ショート料金
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border">
+                    <td className="py-7 pr-4 text-left font-display text-lg font-black">
+                      平日
+                    </td>
+                    <td className="px-4 py-7">
+                      <span className="font-en text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+                        ¥16,500
+                      </span>
+                    </td>
+                    <td className="px-4 py-7">
+                      <span className="font-en text-3xl font-semibold tracking-tight text-text-sub md:text-4xl">
+                        ¥11,000
+                      </span>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="py-7 pr-4 text-left font-display text-lg font-black">
+                      土日祝
+                    </td>
+                    <td className="px-4 py-7">
+                      <span className="font-en text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+                        ¥22,000
+                      </span>
+                    </td>
+                    <td className="px-4 py-7">
+                      <span className="font-en text-3xl font-semibold tracking-tight text-text-sub md:text-4xl">
+                        ¥11,000
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Reveal>
 
-                <div className="mt-8 space-y-3 text-text-sub">
-                  <div className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span>ショート料金は15時〜18時までの午後引き渡し、または9:00〜12:00までの翌朝返却の場合に適用されます。</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span>貸出料金には自動車保険料を含んでおります。</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span>ペットの同乗はお断りさせていただいています。</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <Reveal delay={0.12}>
+            <ul className="mx-auto mt-8 max-w-3xl space-y-3 text-sm text-text-sub md:text-base">
+              {basicNotes.map((note) => (
+                <li key={note} className="flex items-start gap-3">
+                  <span
+                    aria-hidden="true"
+                    className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-secondary"
+                  />
+                  <span className="leading-relaxed">{note}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </Container>
       </section>
 
       {/* Extension Pricing */}
-      <section className="py-20 bg-white">
+      <section className="border-y border-border bg-white py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">延長料金</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              ご返却時間の延長も柔軟に対応いたします（税込）
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="Extension"
+            title="延長料金"
+            lead="ご返却時間の延長も柔軟に対応いたします（税込）"
+          />
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="max-w-3xl mx-auto shadow-xl">
-              <CardContent className="p-8">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-center">
-                    <thead>
-                      <tr className="border-b-2 border-primary/20">
-                        <th className="py-4 px-4 text-left font-semibold text-text-sub"></th>
-                        <th className="py-4 px-4 font-semibold text-lg">1時間延長</th>
-                        <th className="py-4 px-4 font-semibold text-lg">ゆっくりプラン</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-gray-200">
-                        <td className="py-5 px-4 text-left font-semibold text-lg">平日</td>
-                        <td className="py-5 px-4">
-                          <span className="text-2xl font-bold text-primary">¥2,200</span>
-                        </td>
-                        <td className="py-5 px-4">
-                          <span className="text-2xl font-bold text-primary">¥4,400</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-5 px-4 text-left font-semibold text-lg">土日祝</td>
-                        <td className="py-5 px-4">
-                          <span className="text-2xl font-bold text-primary">¥2,200</span>
-                        </td>
-                        <td className="py-5 px-4">
-                          <span className="text-2xl font-bold text-primary">¥5,500</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+          <Reveal>
+            <div className="mx-auto max-w-3xl overflow-x-auto">
+              <table className="w-full min-w-[480px] text-center">
+                <thead>
+                  <tr className="border-b-2 border-ink">
+                    <th className="py-4 pr-4 text-left text-sm font-medium text-text-sub"></th>
+                    <th className="px-4 py-4 text-eyebrow text-primary">
+                      1時間延長
+                    </th>
+                    <th className="px-4 py-4 text-eyebrow text-primary">
+                      ゆっくりプラン
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border">
+                    <td className="py-6 pr-4 text-left font-display text-lg font-black">
+                      平日
+                    </td>
+                    <td className="px-4 py-6">
+                      <span className="font-en text-2xl font-semibold tracking-tight text-ink md:text-3xl">
+                        ¥2,200
+                      </span>
+                    </td>
+                    <td className="px-4 py-6">
+                      <span className="font-en text-2xl font-semibold tracking-tight text-ink md:text-3xl">
+                        ¥4,400
+                      </span>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="py-6 pr-4 text-left font-display text-lg font-black">
+                      土日祝
+                    </td>
+                    <td className="px-4 py-6">
+                      <span className="font-en text-2xl font-semibold tracking-tight text-ink md:text-3xl">
+                        ¥2,200
+                      </span>
+                    </td>
+                    <td className="px-4 py-6">
+                      <span className="font-en text-2xl font-semibold tracking-tight text-ink md:text-3xl">
+                        ¥5,500
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Reveal>
 
-                <div className="mt-8 space-y-3 text-text-sub">
-                  <div className="flex items-start">
-                    <Clock className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                    <span>ゆっくりプランは、本来18時までの返却時間を延長料金無しで22時までとさせていただきます。（事前にお申込みください）</span>
-                  </div>
-                  <div className="flex items-start">
-                    <AlertCircle className="w-5 h-5 text-secondary mr-2 mt-0.5 flex-shrink-0" />
-                    <span>ご返却最終時刻は22時までとなっております。22時以降のご返却につきましては、翌日のショート料金（翌日12時迄の返却）料金を適用させていただきます。</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <Reveal delay={0.12}>
+            <div className="mx-auto mt-8 max-w-3xl space-y-4 text-sm text-text-sub md:text-base">
+              <div className="flex items-start gap-3">
+                <Clock className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                <span className="leading-relaxed">
+                  ゆっくりプランは、本来18時までの返却時間を延長料金無しで22時までとさせていただきます。（事前にお申込みください）
+                </span>
+              </div>
+              <div className="flex items-start gap-3">
+                <AlertCircle className="mt-1 h-4 w-4 shrink-0 text-secondary" />
+                <span className="leading-relaxed">
+                  ご返却最終時刻は22時までとなっております。22時以降のご返却につきましては、翌日のショート料金（翌日12時迄の返却）料金を適用させていただきます。
+                </span>
+              </div>
+            </div>
+          </Reveal>
         </Container>
       </section>
 
       {/* Long-term Discount */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <section className="bg-paper py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">長期割引</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              3日以上の長期ご利用時には、総額に対して割引を適用いたします
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="Discount"
+            title="長期割引"
+            lead="3日以上の長期ご利用時には、総額に対して割引を適用いたします"
+          />
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {[
-              { days: "3日以上", discount: "5%", color: "from-blue-400 to-blue-500" },
-              { days: "5日以上", discount: "10%", color: "from-primary to-primary-dark" },
-              { days: "7日以上", discount: "15%", color: "from-secondary to-secondary-dark" },
-              { days: "10日以上", discount: "20%", color: "from-orange-500 to-red-500" },
-            ].map((tier, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="h-full hover:shadow-xl transition-shadow duration-300 text-center">
-                  <CardContent className="p-6">
-                    <div className={`w-16 h-16 mx-auto bg-gradient-to-br ${tier.color} rounded-full flex items-center justify-center mb-4`}>
-                      <Percent className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="text-lg font-semibold mb-2">{tier.days}</div>
-                    <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                      {tier.discount}
-                    </div>
-                    <div className="text-sm text-text-sub mt-1">割引</div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
+            {discountTiers.map((tier, index) => (
+              <Reveal key={tier.days} delay={index * 0.08}>
+                <div className="group border-t-2 border-ink pt-6 transition-transform duration-500 hover:-translate-y-1.5">
+                  <div className="text-sm font-bold text-text-sub">
+                    {tier.days}
+                  </div>
+                  <div className="mt-2 font-en text-5xl font-semibold tracking-tight text-ink transition-colors duration-300 group-hover:text-primary md:text-6xl">
+                    {tier.discount}
+                  </div>
+                  <div className="mt-2 text-sm text-text-sub">割引</div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </Container>
       </section>
 
       {/* Price Simulation */}
-      <section className="py-20 bg-white">
+      <section className="border-y border-border bg-white py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">料金シミュレーション例</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              代表的な利用パターンの料金例をご紹介します
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="Simulation"
+            title="料金シミュレーション例"
+            lead="代表的な利用パターンの料金例をご紹介します"
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {simulations.map((sim, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="h-full hover:shadow-xl transition-shadow duration-300">
-                  <CardHeader className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-t-lg">
-                    <CardTitle className="text-center text-lg">
+              <Reveal key={sim.title} delay={index * 0.1} className="h-full">
+                <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-paper">
+                  <div className="bg-ink p-6 text-paper">
+                    <div className="text-xs font-bold tracking-[0.25em] text-secondary">
                       ケース{index + 1}
-                    </CardTitle>
-                    <p className="text-center text-sm opacity-90">{sim.title}</p>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <div className="space-y-3 mb-6">
-                      {sim.items.map((item, itemIndex) => (
+                    </div>
+                    <p className="mt-2 font-bold leading-snug">{sim.title}</p>
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <div className="flex-1 space-y-1">
+                      {sim.items.map((item) => (
                         <div
-                          key={itemIndex}
-                          className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0"
+                          key={item.label}
+                          className="flex items-center justify-between gap-4 border-b border-border py-3 last:border-0"
                         >
-                          <span className="text-sm text-text-sub">{item.label}</span>
-                          <span className="font-semibold">{item.price}</span>
+                          <span className="text-sm text-text-sub">
+                            {item.label}
+                          </span>
+                          <span className="font-en font-semibold tracking-tight">
+                            {item.price}
+                          </span>
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between items-center pt-4 border-t-2 border-primary/20">
-                      <span className="font-bold text-lg">合計</span>
-                      <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    <div className="mt-5 flex items-baseline justify-between border-t-2 border-ink pt-4">
+                      <span className="font-display font-black">合計</span>
+                      <span className="font-en text-2xl font-semibold tracking-tight text-primary md:text-3xl">
                         {sim.total}
                       </span>
                     </div>
-                    <p className="text-xs text-text-sub mt-2 text-right">（税込）</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    <p className="mt-1 text-right text-xs text-text-sub">
+                      （税込）
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Included/Not Included Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      {/* Included / Not Included */}
+      <section className="bg-paper py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">料金に含まれるもの</h2>
-          </motion.div>
+          <SectionHeading eyebrow="What's Included" title="料金に含まれるもの" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <Card className="h-full border-2 border-primary/20 bg-primary/5">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-2xl">
-                    <Check className="w-6 h-6 text-primary mr-2" />
-                    含まれるもの
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {included.map((item, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: index * 0.05 }}
-                        className="flex items-center"
-                      >
-                        <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
-                        <span>{item}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Reveal>
+              <div className="h-full rounded-2xl border border-primary/25 bg-primary/[0.05] p-8">
+                <h3 className="flex items-center gap-3 font-display text-xl font-black">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary">
+                    <Check className="h-4 w-4 text-paper" />
+                  </span>
+                  含まれるもの
+                </h3>
+                <ul className="mt-6 space-y-1">
+                  {included.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-3 border-b border-primary/15 py-3 last:border-0"
+                    >
+                      <Check className="h-4 w-4 shrink-0 text-primary" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <Card className="h-full border-2 border-gray-200">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-2xl">
-                    <X className="w-6 h-6 text-text-sub mr-2" />
-                    含まれないもの
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {notIncluded.map((item, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: index * 0.05 }}
-                        className="flex items-center"
-                      >
-                        <X className="w-5 h-5 text-text-sub mr-3 flex-shrink-0" />
-                        <span className="text-text-sub">{item}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <Reveal delay={0.12}>
+              <div className="h-full rounded-2xl border border-border bg-white p-8">
+                <h3 className="flex items-center gap-3 font-display text-xl font-black">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink/10">
+                    <X className="h-4 w-4 text-text-sub" />
+                  </span>
+                  含まれないもの
+                </h3>
+                <ul className="mt-6 space-y-1">
+                  {notIncluded.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-3 border-b border-border py-3 last:border-0"
+                    >
+                      <X className="h-4 w-4 shrink-0 text-text-sub" />
+                      <span className="text-text-sub">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
           </div>
         </Container>
       </section>
 
       {/* Cancellation Policy */}
-      <section className="py-20 bg-white">
+      <section className="border-t border-border bg-white py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">キャンセル料金</h2>
-          </motion.div>
+          <SectionHeading eyebrow="Cancellation" title="キャンセル料金" />
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="max-w-3xl mx-auto shadow-xl">
-              <CardContent className="p-8">
-                <div className="space-y-4">
-                  {cancellationPolicy.map((policy, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.05 }}
-                      className="flex justify-between items-center py-4 border-b border-gray-200 last:border-0"
-                    >
-                      <span className="font-medium">{policy.period}</span>
-                      <span
-                        className={`font-semibold text-lg ${
-                          policy.fee === "無料"
-                            ? "text-primary"
-                            : "text-text-sub"
-                        }`}
-                      >
-                        {policy.fee}
-                      </span>
-                    </motion.div>
-                  ))}
+          <Reveal>
+            <dl className="mx-auto max-w-3xl">
+              {cancellationPolicy.map((policy) => (
+                <div
+                  key={policy.period}
+                  className="flex items-baseline justify-between gap-6 border-b border-border py-5"
+                >
+                  <dt className="font-medium">{policy.period}</dt>
+                  <dd
+                    className={
+                      policy.fee === "無料"
+                        ? "font-display text-lg font-black text-primary"
+                        : "font-en text-lg font-semibold tracking-tight text-text-sub"
+                    }
+                  >
+                    {policy.fee}
+                  </dd>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+              ))}
+            </dl>
+          </Reveal>
         </Container>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-primary-dark">
+      {/* CTA */}
+      <section className="bg-ink py-24 text-paper md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center text-white"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <Reveal className="text-center">
+            <p aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
+              Reservation
+            </p>
+            <h2 className="font-display text-3xl font-black tracking-tight md:text-5xl">
               ご予約・お問い合わせはこちら
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="mt-5 text-paper/65 md:text-lg">
               空き状況の確認やご不明な点など、お気軽にお問い合わせください
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="bg-secondary hover:bg-secondary-dark text-white hover:shadow-2xl transition-all duration-300"
-              >
+            <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+              <Button asChild variant="secondary" size="lg">
                 <Link href="/contact">
-                  お問い合わせ <ArrowRight className="ml-2 w-5 h-5" />
+                  お問い合わせ <ArrowRight className="!size-5" />
                 </Link>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="outline"
-                className="bg-white/10 backdrop-blur-md border-white/30 hover:bg-white/20 text-white"
+                className="border-paper/40 text-paper hover:opacity-100 hover:border-secondary hover:text-secondary"
               >
                 <Link href="/calendar">
-                  空き状況を確認 <Calendar className="ml-2 w-5 h-5" />
+                  空き状況を確認 <Calendar className="!size-5" />
                 </Link>
               </Button>
             </div>
-          </motion.div>
+          </Reveal>
         </Container>
       </section>
-    </div>
+    </>
   );
 }

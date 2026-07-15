@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import Container from "@/components/Container";
+import Reveal from "@/components/motion/Reveal";
+import PageIntro from "@/components/site/PageIntro";
+import SectionHeading from "@/components/site/SectionHeading";
 import {
   MessageCircle,
   CheckCircle,
@@ -33,7 +33,6 @@ const steps = [
       "初めての方には丁寧にご説明いたします",
     ],
     needed: ["ご希望日程", "利用人数", "ご連絡先"],
-    color: "from-blue-500 to-blue-600",
   },
   {
     number: 2,
@@ -48,7 +47,6 @@ const steps = [
       "オプション装備のご希望も承ります",
     ],
     needed: ["本人確認書類", "運転免許証のコピー（要確認）"],
-    color: "from-green-500 to-green-600",
   },
   {
     number: 3,
@@ -64,7 +62,6 @@ const steps = [
       "車両の状態を一緒に確認します",
     ],
     needed: ["運転免許証（原本）", "お支払い（未払いの場合）"],
-    color: "from-primary to-primary-dark",
   },
   {
     number: 4,
@@ -79,7 +76,6 @@ const steps = [
       "写真をたくさん撮って思い出を残しましょう",
     ],
     needed: ["緊急連絡先（お渡しします）", "車両マニュアル"],
-    color: "from-secondary to-secondary-dark",
   },
   {
     number: 5,
@@ -95,7 +91,6 @@ const steps = [
       "お疲れ様でした！旅の感想をお聞かせください",
     ],
     needed: ["満タンのガソリン", "借りた装備品すべて"],
-    color: "from-purple-500 to-purple-600",
   },
 ];
 
@@ -124,267 +119,200 @@ const importantNotes = [
 
 export default function FlowPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=1920&q=80"
-          alt="ご利用の流れ"
-          fill
-          sizes="100vw"
-          className="object-cover object-center brightness-50"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+    <>
+      <PageIntro
+        eyebrow="How It Works"
+        title="ご利用の流れ"
+        lead="初めての方も安心！簡単5ステップ"
+      />
 
-        <Container className="relative h-full flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white px-2"
-          >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
-              ご利用の流れ
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
-              初めての方も安心！簡単5ステップ
-            </p>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* Steps Section */}
-      <section className="py-20">
+      {/* Steps */}
+      <section className="bg-paper py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-4">
-              予約から返却まで
-            </h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              スムーズなご利用のために、流れをご確認ください
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="5 Steps"
+            title="予約から返却まで"
+            lead="スムーズなご利用のために、流れをご確認ください"
+          />
 
-          <div className="max-w-4xl mx-auto">
+          <div className="mx-auto max-w-4xl">
             {steps.map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative"
-              >
-                {/* Connecting Line */}
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute left-12 top-32 w-0.5 h-32 bg-gradient-to-b from-gray-300 to-transparent z-0" />
-                )}
+              <Reveal key={step.number} delay={0.05}>
+                <div className="relative grid grid-cols-[3.5rem_1fr] gap-5 pb-14 last:pb-0 sm:grid-cols-[5rem_1fr] sm:gap-8 md:pb-16">
+                  {/* Rail */}
+                  {index < steps.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-[1.75rem] top-16 h-[calc(100%-4.5rem)] w-px -translate-x-1/2 bg-border sm:left-10"
+                    />
+                  )}
 
-                <Card className="mb-8 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-                  <div className={`h-2 bg-gradient-to-r ${step.color}`} />
-                  <CardContent className="p-8">
-                    <div className="flex flex-col md:flex-row gap-6">
-                      {/* Icon and Number */}
-                      <div className="flex-shrink-0">
-                        <motion.div
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                          className={`w-24 h-24 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center shadow-lg relative`}
-                        >
-                          <step.icon className="w-12 h-12 text-white" />
-                          <div className="absolute -top-3 -right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
-                            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                              {step.number}
-                            </span>
-                          </div>
-                        </motion.div>
-                      </div>
+                  {/* Number */}
+                  <div className="flex flex-col items-center">
+                    <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink bg-paper font-en text-lg font-semibold sm:h-20 sm:w-20 sm:text-2xl">
+                      {String(step.number).padStart(2, "0")}
+                    </span>
+                  </div>
 
-                      {/* Content */}
-                      <div className="flex-1">
-                        <h3 className="text-3xl font-bold mb-2">{step.title}</h3>
-                        <p className="text-xl text-text-sub mb-4">
+                  {/* Card */}
+                  <div className="rounded-2xl border border-border bg-white p-6 transition-shadow duration-500 hover:shadow-[0_24px_60px_-32px_rgba(16,23,19,0.35)] sm:p-8">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/[0.08]">
+                        <step.icon className="h-5 w-5 text-primary" />
+                      </span>
+                      <div>
+                        <h3 className="font-display text-xl font-black sm:text-2xl">
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-text-sub sm:text-base">
                           {step.description}
                         </p>
-
-                        <div className="flex items-center gap-2 mb-6 text-sm">
-                          <Clock className="w-4 h-4 text-primary" />
-                          <span className="text-text-sub">所要時間: {step.duration}</span>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-6">
-                          {/* Details */}
-                          <div>
-                            <h4 className="font-semibold mb-3 flex items-center">
-                              <div className="w-1 h-4 bg-primary rounded-full mr-2" />
-                              詳細
-                            </h4>
-                            <ul className="space-y-2">
-                              {step.details.map((detail, i) => (
-                                <li key={i} className="flex items-start text-sm">
-                                  <span className="text-primary mr-2 mt-1">•</span>
-                                  <span className="text-text-sub">{detail}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* Needed Items */}
-                          <div>
-                            <h4 className="font-semibold mb-3 flex items-center">
-                              <div className="w-1 h-4 bg-secondary rounded-full mr-2" />
-                              必要なもの
-                            </h4>
-                            <ul className="space-y-2">
-                              {step.needed.map((item, i) => (
-                                <li
-                                  key={i}
-                                  className="flex items-center text-sm bg-secondary/10 px-3 py-2 rounded-lg"
-                                >
-                                  <CheckCircle className="w-4 h-4 text-secondary mr-2 flex-shrink-0" />
-                                  <span>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
                       </div>
+                      <span className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs text-text-sub">
+                        <Clock className="h-3.5 w-3.5 text-secondary" />
+                        所要時間: {step.duration}
+                      </span>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </Container>
-      </section>
 
-      {/* Important Notes Section */}
-      <section className="py-20 bg-white">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">重要事項</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              ご利用前に必ずご確認ください
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {importantNotes.map((note, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="h-full hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <note.icon className="w-6 h-6 text-primary" />
-                      </div>
+                    <div className="mt-7 grid gap-8 md:grid-cols-2">
+                      {/* Details */}
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">
-                          {note.title}
-                        </h3>
-                        <p className="text-text-sub">{note.content}</p>
+                        <h4 className="text-eyebrow mb-4 text-primary">
+                          詳細
+                        </h4>
+                        <ul className="space-y-2.5">
+                          {step.details.map((detail) => (
+                            <li
+                              key={detail}
+                              className="flex items-start gap-3 text-sm"
+                            >
+                              <span
+                                aria-hidden="true"
+                                className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full bg-primary/50"
+                              />
+                              <span className="leading-relaxed text-text-sub">
+                                {detail}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Needed Items */}
+                      <div>
+                        <h4 className="text-eyebrow mb-4 text-secondary-dark">
+                          必要なもの
+                        </h4>
+                        <ul className="space-y-2">
+                          {step.needed.map((item) => (
+                            <li
+                              key={item}
+                              className="flex items-center gap-2.5 rounded-lg bg-secondary/[0.12] px-3.5 py-2.5 text-sm"
+                            >
+                              <CheckCircle className="h-4 w-4 shrink-0 text-secondary-dark" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                  </div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* FAQ Link Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      {/* Important Notes */}
+      <section className="border-y border-border bg-white py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="max-w-3xl mx-auto bg-gradient-to-r from-primary/5 to-secondary/5 border-2 border-primary/20">
-              <CardContent className="p-8 text-center">
-                <h3 className="text-2xl font-bold mb-4">
-                  よくあるご質問
-                </h3>
-                <p className="text-text-sub mb-6">
-                  さらに詳しい情報は、FAQページをご覧ください。
-                  <br />
-                  疑問や不安な点があれば、お気軽にお問い合わせください。
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-gradient-to-r from-primary to-primary-dark"
-                  >
-                    <Link href="/faq">
-                      FAQを見る <ArrowRight className="ml-2 w-5 h-5" />
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    size="lg"
-                    variant="outline"
-                    className="border-2 border-primary hover:bg-primary hover:text-white"
-                  >
-                    <Link href="/contact">
-                      お問い合わせ <ArrowRight className="ml-2 w-5 h-5" />
-                    </Link>
-                  </Button>
+          <SectionHeading
+            eyebrow="Important"
+            title="重要事項"
+            lead="ご利用前に必ずご確認ください"
+          />
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {importantNotes.map((note, index) => (
+              <Reveal key={note.title} delay={(index % 2) * 0.1}>
+                <div className="flex h-full items-start gap-5 rounded-2xl border border-border bg-paper p-7 transition-transform duration-500 hover:-translate-y-1">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-white">
+                    <note.icon className="h-5 w-5 text-primary" />
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg font-black">
+                      {note.title}
+                    </h3>
+                    <p className="mt-2 leading-relaxed text-text-sub">
+                      {note.content}
+                    </p>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+              </Reveal>
+            ))}
+          </div>
         </Container>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary via-primary-dark to-primary">
+      {/* FAQ Link */}
+      <section className="bg-paper py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center text-white"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <Reveal>
+            <div className="mx-auto max-w-3xl rounded-2xl border-l-4 border-primary bg-white p-8 text-center md:p-12">
+              <h3 className="font-display text-2xl font-black">
+                よくあるご質問
+              </h3>
+              <p className="mt-4 leading-relaxed text-text-sub">
+                さらに詳しい情報は、FAQページをご覧ください。
+                <br />
+                疑問や不安な点があれば、お気軽にお問い合わせください。
+              </p>
+              <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                <Button asChild size="lg">
+                  <Link href="/faq">
+                    FAQを見る <ArrowRight className="!size-5" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-ink/20 hover:opacity-100 hover:border-primary hover:text-primary"
+                >
+                  <Link href="/contact">
+                    お問い合わせ <ArrowRight className="!size-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-ink py-24 text-paper md:py-32">
+        <Container>
+          <Reveal className="text-center">
+            <p aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
+              Reservation
+            </p>
+            <h2 className="font-display text-3xl font-black tracking-tight md:text-5xl">
               準備ができましたら、ご予約ください
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="mt-5 text-paper/65 md:text-lg">
               空き状況を確認して、素敵な旅の計画を始めましょう
             </p>
-            <Button
-              asChild
-              size="lg"
-              className="bg-secondary hover:bg-secondary-dark text-white hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6"
-            >
-              <Link href="/calendar">
-                空き状況を確認 <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-            </Button>
-          </motion.div>
+            <div className="mt-10 flex justify-center">
+              <Button asChild variant="secondary" size="lg">
+                <Link href="/calendar">
+                  空き状況を確認 <ArrowRight className="!size-5" />
+                </Link>
+              </Button>
+            </div>
+          </Reveal>
         </Container>
       </section>
-    </div>
+    </>
   );
 }

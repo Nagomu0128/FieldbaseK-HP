@@ -1,25 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { getLenis } from "@/components/motion/SmoothScroll";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import Container from "@/components/Container";
+import Reveal from "@/components/motion/Reveal";
+import PageIntro from "@/components/site/PageIntro";
+import SectionHeading from "@/components/site/SectionHeading";
 import StructuredData from "@/components/seo/StructuredData";
 import {
-  Snowflake,
-  Battery,
   ArrowRight,
   X,
   ChevronLeft,
   ChevronRight,
-  Play,
   Zap,
   Thermometer,
   ParkingSquare,
-  Maximize,
 } from "lucide-react";
 
 import topSlide from "@/assets/top_slide01.jpg";
@@ -74,8 +73,39 @@ const specs = [
   { label: "暖房", value: "FFヒーター（燃焼式）" },
 ];
 
+const dimensions = [
+  { label: "全長", value: "4.79m" },
+  { label: "全幅", value: "1.96m" },
+  { label: "全高", value: "2.72m" },
+];
+
+const notes = [
+  "運転には普通自動車免許が必要です",
+  "高さ制限のある場所（立体駐車場等）はご利用いただけません（全高2.72m）",
+  "車内は禁煙です",
+  "ペットの同乗はお断りさせていただいています",
+  "出発前に丁寧な説明を行いますので、初めての方もご安心ください",
+];
+
 export default function VehiclePage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const lightboxOpen = selectedImage !== null;
+
+  // ライトボックス表示中は背面スクロールを止め、Escape で閉じられるようにする
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    getLenis()?.stop();
+    document.documentElement.classList.add("lenis-stopped");
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      getLenis()?.start();
+      document.documentElement.classList.remove("lenis-stopped");
+    };
+  }, [lightboxOpen]);
 
   const productData = {
     "@context": "https://schema.org",
@@ -123,425 +153,296 @@ export default function VehiclePage() {
     <>
       <StructuredData data={productData} />
       <StructuredData data={breadcrumbData} />
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-        {/* Hero Section */}
-        <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
-          <Image
-            src={topSlide}
-            alt="ナッツRV ジョリビー"
-            fill
-            sizes="100vw"
-            className="object-cover object-center brightness-75"
-            priority
-            placeholder="blur"
+
+      <PageIntro
+        eyebrow="The Vehicle"
+        title="ナッツRV ジョリビー"
+        lead="日本最大級キャンピングカービルダーが手がける、コンパクト＆高機能キャブコン"
+      />
+
+      {/* Features */}
+      <section className="bg-paper py-24 md:py-32">
+        <Container>
+          <SectionHeading
+            eyebrow="Features"
+            title="ジョリビーの特徴"
+            lead="キャブコンながらもコンパクト。充実装備で快適なキャンピングカーライフを"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-          <Container className="relative h-full flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center text-white px-2"
-            >
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
-                ナッツRV ジョリビー
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
-                日本最大級キャンピングカービルダーが手がける、コンパクト＆高機能キャブコン
-              </p>
-            </motion.div>
-          </Container>
-        </section>
+          <div className="grid grid-cols-1 gap-x-10 gap-y-14 md:grid-cols-3">
+            {vehicleFeatures.map((feature, index) => (
+              <Reveal key={feature.title} delay={index * 0.12}>
+                <div className="group h-full border-t-2 border-ink pt-7 transition-transform duration-500 hover:-translate-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span
+                      aria-hidden="true"
+                      className="font-en text-sm font-semibold text-text-sub transition-colors duration-300 group-hover:text-secondary"
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-white transition-colors duration-300 group-hover:border-secondary">
+                      <feature.icon className="h-5 w-5 text-primary transition-colors duration-300 group-hover:text-secondary" />
+                    </span>
+                  </div>
+                  <h3 className="mt-7 font-display text-xl font-black leading-snug">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-4 leading-relaxed text-text-sub">
+                    {feature.description}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
 
-        {/* Features Section */}
-        <section className="py-20">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-12"
-            >
-              <h2 className="text-4xl font-bold mb-4 text-center">
-                ジョリビーの特徴
-              </h2>
-              <p className="text-xl text-text-sub text-center max-w-2xl mx-auto">
-                キャブコンながらもコンパクト。充実装備で快適なキャンピングカーライフを
-              </p>
-            </motion.div>
+      {/* Body Size */}
+      <section className="border-y border-border bg-white py-24 md:py-32">
+        <Container>
+          <SectionHeading
+            eyebrow="Body Size"
+            title="ボディサイズ"
+            lead="一般的な駐車場サイズに収まるコンパクトボディ"
+          />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {vehicleFeatures.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <Card className="h-full hover:shadow-xl transition-shadow duration-300 group">
-                    <CardContent className="p-6">
-                      <div className="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center mb-4 group-hover:shadow-lg transition-shadow">
-                        <feature.icon className="w-7 h-7 text-white" />
-                      </div>
-                      <h3 className="text-xl font-semibold mb-3">
-                        {feature.title}
-                      </h3>
-                      <p className="text-text-sub">{feature.description}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+          <Reveal>
+            <div className="relative mx-auto aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-border bg-white">
+              <Image
+                src={bodysize}
+                alt="ジョリビー ボディサイズ 全長4.79m 全幅1.96m 全高2.72m"
+                fill
+                sizes="(min-width: 1024px) 896px, 100vw"
+                className="object-contain"
+                placeholder="blur"
+              />
             </div>
-          </Container>
-        </section>
+          </Reveal>
 
-        {/* Body Size Section */}
-        <section className="py-20 bg-white">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-12"
-            >
-              <h2 className="text-4xl font-bold mb-4 text-center">
-                ボディサイズ
-              </h2>
-              <p className="text-xl text-text-sub text-center max-w-2xl mx-auto">
-                一般的な駐車場サイズに収まるコンパクトボディ
-              </p>
-            </motion.div>
+          <div className="mx-auto mt-10 grid max-w-4xl grid-cols-3 gap-6">
+            {dimensions.map((dim, index) => (
+              <Reveal key={dim.label} delay={index * 0.08}>
+                <div className="border-t-2 border-ink pt-5 text-center md:text-left">
+                  <div className="text-sm text-text-sub">{dim.label}</div>
+                  <div className="mt-1 font-en text-3xl font-semibold tracking-tight text-ink md:text-5xl">
+                    {dim.value}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="max-w-4xl mx-auto"
-            >
-              <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl">
-                <Image
-                  src={bodysize}
-                  alt="ジョリビー ボディサイズ 全長4.79m 全幅1.96m 全高2.72m"
-                  fill
-                  className="object-contain bg-white"
-                  placeholder="blur"
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4 mt-8">
-                {[
-                  { label: "全長", value: "4.79m" },
-                  { label: "全幅", value: "1.96m" },
-                  { label: "全高", value: "2.72m" },
-                ].map((dim, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="text-center p-4 bg-gray-50 rounded-xl"
-                  >
-                    <div className="text-sm text-text-sub mb-1">
-                      {dim.label}
-                    </div>
-                    <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                      {dim.value}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </Container>
-        </section>
+      {/* Gallery */}
+      <section className="bg-paper py-24 md:py-32">
+        <Container>
+          <SectionHeading
+            eyebrow="Gallery"
+            title="フォトギャラリー"
+            lead="実際の車両の様子をご覧ください"
+          />
 
-        {/* Gallery Section */}
-        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-12"
-            >
-              <h2 className="text-4xl font-bold mb-4 text-center">
-                フォトギャラリー
-              </h2>
-              <p className="text-xl text-text-sub text-center max-w-2xl mx-auto">
-                実際の車両の様子をご覧ください
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {vehicleImages.map((image, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="relative h-64 rounded-xl overflow-hidden shadow-lg cursor-pointer group"
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {vehicleImages.map((image, index) => (
+              <Reveal key={image.alt} delay={(index % 3) * 0.08}>
+                <motion.button
+                  type="button"
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative block h-64 w-full cursor-pointer overflow-hidden rounded-2xl"
                   onClick={() => setSelectedImage(index)}
+                  aria-label={`${image.alt}を拡大表示`}
                 >
                   <Image
                     src={image.src}
                     alt={image.alt}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                     placeholder="blur"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                </motion.div>
-              ))}
-            </div>
-          </Container>
-        </section>
+                  <div className="absolute inset-0 bg-ink/0 transition-colors duration-300 group-hover:bg-ink/25" />
+                  <span className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-paper/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <ArrowRight className="h-4 w-4 -rotate-45 text-ink" />
+                  </span>
+                </motion.button>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
 
-        {/* Image Lightbox */}
-        <AnimatePresence>
-          {selectedImage !== null && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+      {/* Image Lightbox */}
+      <AnimatePresence>
+        {selectedImage !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={vehicleImages[selectedImage].alt}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/95 p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button
+              className="absolute right-4 top-4 text-paper transition-colors hover:text-secondary"
               onClick={() => setSelectedImage(null)}
+              aria-label="閉じる"
             >
-              <button
-                className="absolute top-4 right-4 text-white hover:text-secondary transition-colors"
-                onClick={() => setSelectedImage(null)}
-              >
-                <X className="w-8 h-8" />
-              </button>
+              <X className="h-8 w-8" />
+            </button>
 
-              <button
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-secondary transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedImage(
-                    (selectedImage - 1 + vehicleImages.length) %
-                      vehicleImages.length
-                  );
-                }}
-              >
-                <ChevronLeft className="w-12 h-12" />
-              </button>
-
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.8 }}
-                className="relative w-full max-w-5xl h-[80vh]"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Image
-                  src={vehicleImages[selectedImage].src}
-                  alt={vehicleImages[selectedImage].alt}
-                  fill
-                  className="object-contain"
-                  placeholder="blur"
-                />
-              </motion.div>
-
-              <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-secondary transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedImage(
-                    (selectedImage + 1) % vehicleImages.length
-                  );
-                }}
-              >
-                <ChevronRight className="w-12 h-12" />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Specifications Section */}
-        <section className="py-20 bg-white">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-12"
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-paper transition-colors hover:text-secondary"
+              aria-label="前の画像"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage(
+                  (selectedImage - 1 + vehicleImages.length) %
+                    vehicleImages.length
+                );
+              }}
             >
-              <h2 className="text-4xl font-bold mb-4 text-center">
-                車両スペック
-              </h2>
-            </motion.div>
+              <ChevronLeft className="h-12 w-12" />
+            </button>
 
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="relative h-[80vh] w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
             >
-              <Card className="max-w-4xl mx-auto shadow-xl">
-                <CardContent className="p-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-                    {specs.map((spec, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: index * 0.05 }}
-                        className="flex justify-between items-center py-3 border-b border-gray-200 last:border-0"
-                      >
-                        <span className="font-medium text-text-sub">
-                          {spec.label}
-                        </span>
-                        <span className="font-semibold text-lg">
-                          {spec.value}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </Container>
-        </section>
-
-        {/* YouTube Video Section */}
-        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-12"
-            >
-              <h2 className="text-4xl font-bold mb-4 text-center">
-                車両紹介ムービー
-              </h2>
-              <p className="text-xl text-text-sub text-center max-w-2xl mx-auto">
-                ジョリビーの魅力を動画でご覧ください
-              </p>
+              <Image
+                src={vehicleImages[selectedImage].src}
+                alt={vehicleImages[selectedImage].alt}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                placeholder="blur"
+              />
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="max-w-4xl mx-auto"
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-paper transition-colors hover:text-secondary"
+              aria-label="次の画像"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage((selectedImage + 1) % vehicleImages.length);
+              }}
             >
-              <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
-                <iframe
-                  src="https://www.youtube.com/embed/liwRDszL5p8"
-                  title="ジョリビー 車両紹介ムービー"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                />
-              </div>
-            </motion.div>
-          </Container>
-        </section>
+              <ChevronRight className="h-12 w-12" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        {/* Notes Section */}
-        <section className="py-20 bg-white">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <Card className="max-w-4xl mx-auto border-2 border-secondary/20 bg-secondary/5">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold mb-6 flex items-center">
-                    <div className="w-2 h-8 bg-secondary rounded-full mr-4" />
-                    ご利用にあたっての注意事項
-                  </h3>
-                  <ul className="space-y-3 text-lg">
-                    <li className="flex items-start">
-                      <span className="text-secondary mr-3">•</span>
-                      <span>
-                        運転には普通自動車免許が必要です
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary mr-3">•</span>
-                      <span>
-                        高さ制限のある場所（立体駐車場等）はご利用いただけません（全高2.72m）
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary mr-3">•</span>
-                      <span>車内は禁煙です</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary mr-3">•</span>
-                      <span>
-                        ペットの同乗はお断りさせていただいています
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary mr-3">•</span>
-                      <span>
-                        出発前に丁寧な説明を行いますので、初めての方もご安心ください
-                      </span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </Container>
-        </section>
+      {/* Specifications */}
+      <section className="border-y border-border bg-white py-24 md:py-32">
+        <Container>
+          <SectionHeading eyebrow="Specifications" title="車両スペック" />
 
-        {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary-dark">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center text-white"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                この車両で旅を始めませんか？
-              </h2>
-              <p className="text-xl mb-8 opacity-90">
-                料金プランや空き状況をご確認ください
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-secondary hover:bg-secondary-dark text-white hover:shadow-2xl transition-all duration-300"
+          <Reveal>
+            <dl className="mx-auto grid max-w-4xl grid-cols-1 gap-x-14 md:grid-cols-2">
+              {specs.map((spec) => (
+                <div
+                  key={spec.label}
+                  className="flex items-baseline justify-between gap-6 border-b border-border py-4"
                 >
-                  <Link href="/pricing">
-                    料金を見る <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="bg-white/10 backdrop-blur-md border-white/30 hover:bg-white/20 text-white"
-                >
-                  <Link href="/calendar">
-                    空き状況を確認 <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                </Button>
-              </div>
-            </motion.div>
-          </Container>
-        </section>
-      </div>
+                  <dt className="shrink-0 text-sm font-medium text-text-sub">
+                    {spec.label}
+                  </dt>
+                  <dd className="text-right font-bold">{spec.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* YouTube Video */}
+      <section className="bg-paper py-24 md:py-32">
+        <Container>
+          <SectionHeading
+            eyebrow="Movie"
+            title="車両紹介ムービー"
+            lead="ジョリビーの魅力を動画でご覧ください"
+          />
+
+          <Reveal>
+            <div className="relative mx-auto aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-border">
+              <iframe
+                src="https://www.youtube.com/embed/liwRDszL5p8"
+                title="ジョリビー 車両紹介ムービー"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full"
+              />
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* Notes */}
+      <section className="border-t border-border bg-white py-24 md:py-32">
+        <Container>
+          <Reveal>
+            <div className="mx-auto max-w-4xl rounded-2xl border-l-4 border-secondary bg-paper p-8 md:p-10">
+              <h3 className="font-display text-xl font-black md:text-2xl">
+                ご利用にあたっての注意事項
+              </h3>
+              <ul className="mt-6 space-y-3">
+                {notes.map((note) => (
+                  <li key={note} className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-secondary"
+                    />
+                    <span className="leading-relaxed text-ink/85">{note}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-ink py-24 text-paper md:py-32">
+        <Container>
+          <Reveal className="text-center">
+            <p aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
+              Reservation
+            </p>
+            <h2 className="font-display text-3xl font-black tracking-tight md:text-5xl">
+              この車両で旅を始めませんか？
+            </h2>
+            <p className="mt-5 text-paper/65 md:text-lg">
+              料金プランや空き状況をご確認ください
+            </p>
+            <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+              <Button asChild variant="secondary" size="lg">
+                <Link href="/pricing">
+                  料金を見る <ArrowRight className="!size-5" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-paper/40 text-paper hover:opacity-100 hover:border-secondary hover:text-secondary"
+              >
+                <Link href="/calendar">
+                  空き状況を確認 <ArrowRight className="!size-5" />
+                </Link>
+              </Button>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
     </>
   );
 }

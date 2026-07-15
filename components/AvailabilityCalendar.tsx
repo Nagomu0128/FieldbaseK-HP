@@ -37,16 +37,20 @@ export default function AvailabilityCalendar() {
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [busyDates, setBusyDates] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(false);
+  // 初回マウント時からフェッチが走るため、初期値は loading=true
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // 月変更時のフェッチ開始状態はイベントハンドラ側で設定する
+  const beginFetch = () => {
+    setLoading(true);
+    setError(null);
+  };
 
   useEffect(() => {
     const controller = new AbortController();
     const start = new Date(viewYear, viewMonth, 1);
     const end = new Date(viewYear, viewMonth + 1, 0, 23, 59, 59);
-
-    setLoading(true);
-    setError(null);
 
     fetch(
       `/api/availability?timeMin=${encodeURIComponent(
@@ -64,7 +68,10 @@ export default function AvailabilityCalendar() {
           setError("空き状況の取得に失敗しました");
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        // 月連打時、中断された古いリクエストがスピナーを消さないようにする
+        if (!controller.signal.aborted) setLoading(false);
+      });
 
     return () => controller.abort();
   }, [viewYear, viewMonth]);
@@ -75,6 +82,7 @@ export default function AvailabilityCalendar() {
   );
 
   const goPrev = () => {
+    beginFetch();
     const m = viewMonth - 1;
     if (m < 0) {
       setViewYear(viewYear - 1);
@@ -85,6 +93,7 @@ export default function AvailabilityCalendar() {
   };
 
   const goNext = () => {
+    beginFetch();
     const m = viewMonth + 1;
     if (m > 11) {
       setViewYear(viewYear + 1);
@@ -95,6 +104,7 @@ export default function AvailabilityCalendar() {
   };
 
   const goToday = () => {
+    beginFetch();
     setViewYear(today.getFullYear());
     setViewMonth(today.getMonth());
   };

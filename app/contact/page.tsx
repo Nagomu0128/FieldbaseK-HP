@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import Container from "@/components/Container";
+import Reveal from "@/components/motion/Reveal";
+import PageIntro from "@/components/site/PageIntro";
 import {
   Mail,
   Phone,
@@ -121,37 +121,44 @@ export default function ContactPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center py-10 sm:py-20 px-4">
+      <div className="flex min-h-screen items-center justify-center bg-paper px-4 py-24">
         <Container>
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Card className="max-w-2xl mx-auto text-center shadow-2xl">
-              <CardContent className="p-6 sm:p-8 md:p-12">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6"
-                >
-                  <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white" />
-                </motion.div>
-                <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">送信完了</h2>
-                <p className="text-base sm:text-lg md:text-xl text-text-sub mb-6 sm:mb-8">
-                  お問い合わせありがとうございます。
-                  <br />
-                  内容を確認次第、担当者よりご連絡させていただきます。
-                </p>
-                <Button
-                  onClick={() => setIsSubmitted(false)}
-                  className="bg-gradient-to-r from-primary to-primary-dark"
-                >
-                  もう一度送信する
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-white p-8 text-center sm:p-12 md:p-16">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary"
+              >
+                <CheckCircle className="h-9 w-9 text-paper" />
+              </motion.div>
+              <p
+                aria-hidden="true"
+                className="text-eyebrow mt-8 text-primary"
+              >
+                Thank You
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black">
+                送信完了
+              </h2>
+              <p className="mt-5 leading-relaxed text-text-sub md:text-lg">
+                お問い合わせありがとうございます。
+                <br />
+                内容を確認次第、担当者よりご連絡させていただきます。
+              </p>
+              <Button
+                onClick={() => setIsSubmitted(false)}
+                size="lg"
+                className="mt-9"
+              >
+                もう一度送信する
+              </Button>
+            </div>
           </motion.div>
         </Container>
       </div>
@@ -159,298 +166,271 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1920&q=80"
-          alt="お問い合わせ"
-          fill
-          sizes="100vw"
-          className="object-cover object-center brightness-50"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-        <Container className="relative h-full flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white px-2"
-          >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
-              お問い合わせ
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
-              ご質問・ご予約など、お気軽にお問い合わせください
-            </p>
-          </motion.div>
-        </Container>
-      </section>
+    <>
+      <PageIntro
+        eyebrow="Contact"
+        title="お問い合わせ"
+        lead="ご質問・ご予約など、お気軽にお問い合わせください"
+      />
 
       {/* Main Content */}
-      <section className="py-10 sm:py-14 md:py-20">
+      <section className="bg-paper py-20 md:py-28">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-14">
             {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card className="shadow-2xl">
-                  <CardContent className="p-4 sm:p-6 md:p-8">
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
-                      お問い合わせフォーム
-                    </h2>
+            <Reveal className="lg:col-span-2">
+              <div className="rounded-2xl border border-border bg-white p-6 sm:p-8 md:p-10">
+                <p aria-hidden="true" className="text-eyebrow text-primary">
+                  Form
+                </p>
+                <h2 className="mt-3 font-display text-2xl font-black sm:text-3xl">
+                  お問い合わせフォーム
+                </h2>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      {/* Name */}
-                      <div>
-                        <Label htmlFor="name" className="text-base">
-                          お名前 <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                          id="name"
-                          name="name"
-                          type="text"
-                          required
-                          value={formData.name}
-                          onChange={handleChange}
-                          className="mt-2"
-                          placeholder="山田 太郎"
-                        />
-                      </div>
+                <form onSubmit={handleSubmit} className="mt-9 space-y-7">
+                  {/* Name */}
+                  <div>
+                    <Label htmlFor="name" className="text-sm font-bold">
+                      お名前 <span className="text-secondary-dark">*</span>
+                    </Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="mt-2.5"
+                      placeholder="山田 太郎"
+                    />
+                  </div>
 
-                      {/* Email */}
-                      <div>
-                        <Label htmlFor="email" className="text-base">
-                          メールアドレス <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          className="mt-2"
-                          placeholder="example@email.com"
-                        />
-                      </div>
+                  {/* Email */}
+                  <div>
+                    <Label htmlFor="email" className="text-sm font-bold">
+                      メールアドレス{" "}
+                      <span className="text-secondary-dark">*</span>
+                    </Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="mt-2.5"
+                      placeholder="example@email.com"
+                    />
+                  </div>
 
-                      {/* Phone */}
-                      <div>
-                        <Label htmlFor="phone" className="text-base">
-                          電話番号
-                        </Label>
-                        <Input
-                          id="phone"
-                          name="phone"
-                          type="tel"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          className="mt-2"
-                          placeholder="090-1234-5678"
-                        />
-                      </div>
+                  {/* Phone */}
+                  <div>
+                    <Label htmlFor="phone" className="text-sm font-bold">
+                      電話番号
+                    </Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="mt-2.5"
+                      placeholder="090-1234-5678"
+                    />
+                  </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Date */}
-                        <div>
-                          <Label htmlFor="date" className="text-base">
-                            利用希望日
-                          </Label>
-                          <Input
-                            id="date"
-                            name="date"
-                            type="date"
-                            value={formData.date}
-                            onChange={handleChange}
-                            className="mt-2"
-                          />
-                        </div>
+                  <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
+                    {/* Date */}
+                    <div>
+                      <Label htmlFor="date" className="text-sm font-bold">
+                        利用希望日
+                      </Label>
+                      <Input
+                        id="date"
+                        name="date"
+                        type="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                        className="mt-2.5"
+                      />
+                    </div>
 
-                        {/* Days */}
-                        <div>
-                          <Label htmlFor="days" className="text-base">
-                            利用日数
-                          </Label>
-                          <select
-                            id="days"
-                            name="days"
-                            value={formData.days}
-                            onChange={handleChange}
-                            className="mt-2 w-full h-10 px-3 rounded-md border border-input bg-background"
-                          >
-                            <option value="">選択してください</option>
-                            <option value="1泊2日">1泊2日</option>
-                            <option value="2泊3日">2泊3日</option>
-                            <option value="3泊4日">3泊4日</option>
-                            <option value="4泊5日">4泊5日</option>
-                            <option value="5泊以上">5泊以上</option>
-                            <option value="未定">未定</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      {/* Message */}
-                      <div>
-                        <Label htmlFor="message" className="text-base">
-                          お問い合わせ内容 <span className="text-red-500">*</span>
-                        </Label>
-                        <Textarea
-                          id="message"
-                          name="message"
-                          required
-                          value={formData.message}
-                          onChange={handleChange}
-                          className="mt-2 min-h-[150px]"
-                          placeholder="ご質問やご要望など、お気軽にお書きください"
-                        />
-                      </div>
-
-                      {submitError && (
-                        <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-                          {submitError}
-                        </div>
-                      )}
-
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        size="lg"
-                        className="w-full bg-gradient-to-r from-primary to-primary-dark hover:shadow-xl transition-all duration-300 text-lg"
+                    {/* Days */}
+                    <div>
+                      <Label htmlFor="days" className="text-sm font-bold">
+                        利用日数
+                      </Label>
+                      <select
+                        id="days"
+                        name="days"
+                        value={formData.days}
+                        onChange={handleChange}
+                        className="mt-2.5 flex h-12 w-full rounded-lg border border-border bg-white px-4 text-base transition-colors hover:border-ink/30 focus-visible:border-secondary focus-visible:outline-none"
                       >
-                        {isSubmitting ? (
-                          <>送信中...</>
-                        ) : (
-                          <>
-                            送信する <Send className="ml-2 w-5 h-5" />
-                          </>
-                        )}
-                      </Button>
+                        <option value="">選択してください</option>
+                        <option value="1泊2日">1泊2日</option>
+                        <option value="2泊3日">2泊3日</option>
+                        <option value="3泊4日">3泊4日</option>
+                        <option value="4泊5日">4泊5日</option>
+                        <option value="5泊以上">5泊以上</option>
+                        <option value="未定">未定</option>
+                      </select>
+                    </div>
+                  </div>
 
-                      <p className="text-sm text-text-sub text-center">
-                        ※ 必須項目は必ずご入力ください
-                        <br />※ 通常1〜2営業日以内にご返信いたします
-                      </p>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
+                  {/* Message */}
+                  <div>
+                    <Label htmlFor="message" className="text-sm font-bold">
+                      お問い合わせ内容{" "}
+                      <span className="text-secondary-dark">*</span>
+                    </Label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="mt-2.5 min-h-[150px]"
+                      placeholder="ご質問やご要望など、お気軽にお書きください"
+                    />
+                  </div>
+
+                  {submitError && (
+                    <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                      {submitError}
+                    </div>
+                  )}
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    size="lg"
+                    className="w-full"
+                  >
+                    {isSubmitting ? (
+                      <>送信中...</>
+                    ) : (
+                      <>
+                        送信する <Send className="!size-5" />
+                      </>
+                    )}
+                  </Button>
+
+                  <p className="text-center text-sm leading-relaxed text-text-sub">
+                    ※ 必須項目は必ずご入力ください
+                    <br />※ 通常1〜2営業日以内にご返信いたします
+                  </p>
+                </form>
+              </div>
+            </Reveal>
 
             {/* Contact Info Sidebar */}
             <div className="space-y-6">
               {/* Contact Details */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card className="shadow-xl">
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-6">直接ご連絡</h3>
-                    <div className="space-y-4">
-                      {contactInfo.map((info, index) => (
-                        <motion.a
-                          key={index}
-                          href={info.link}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.4, delay: index * 0.1 }}
-                          className="flex items-start gap-4 p-4 rounded-lg hover:bg-primary/5 transition-colors"
-                        >
-                          <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center flex-shrink-0">
-                            <info.icon className="w-5 h-5 text-white" />
-                          </div>
-                          <div>
-                            <div className="font-semibold text-sm text-text-sub mb-1">
-                              {info.title}
-                            </div>
-                            <div className="text-sm">{info.content}</div>
-                          </div>
-                        </motion.a>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Reveal delay={0.1}>
+                <div className="rounded-2xl border border-border bg-white p-7">
+                  <p aria-hidden="true" className="text-eyebrow text-primary">
+                    Direct
+                  </p>
+                  <h3 className="mt-3 font-display text-xl font-black">
+                    直接ご連絡
+                  </h3>
+                  <div className="mt-5 space-y-1">
+                    {contactInfo.map((info) => (
+                      <a
+                        key={info.title}
+                        href={info.link}
+                        target={
+                          info.link?.startsWith("http") ? "_blank" : undefined
+                        }
+                        rel={
+                          info.link?.startsWith("http")
+                            ? "noopener noreferrer"
+                            : undefined
+                        }
+                        className="group flex items-start gap-4 rounded-xl p-3 transition-colors hover:bg-paper"
+                      >
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border transition-colors duration-300 group-hover:border-secondary">
+                          <info.icon className="h-4 w-4 text-primary" />
+                        </span>
+                        <span>
+                          <span className="block text-xs font-bold text-text-sub">
+                            {info.title}
+                          </span>
+                          <span className="mt-0.5 block text-sm">
+                            {info.content}
+                          </span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
 
               {/* Business Hours */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <Card className="shadow-xl bg-gradient-to-br from-primary/5 to-secondary/5">
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4 flex items-center">
-                      <Clock className="w-5 h-5 text-primary mr-2" />
-                      営業時間
-                    </h3>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-text-sub">平日</span>
-                        <span className="font-semibold">9:00 - 18:00</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-text-sub">土日祝</span>
-                        <span className="font-semibold">9:00 - 18:00</span>
-                      </div>
-                      <div className="pt-3 border-t border-gray-200">
-                        <span className="text-text-sub">不定休</span>
-                      </div>
+              <Reveal delay={0.2}>
+                <div className="rounded-2xl bg-ink p-7 text-paper">
+                  <h3 className="flex items-center gap-2.5 font-display text-xl font-black">
+                    <Clock className="h-5 w-5 text-secondary" />
+                    営業時間
+                  </h3>
+                  <div className="mt-5 space-y-1 text-sm">
+                    <div className="flex justify-between border-b border-line-dark py-2.5">
+                      <span className="text-paper/60">平日</span>
+                      <span className="font-en font-semibold tracking-wide">
+                        9:00 - 18:00
+                      </span>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    <div className="flex justify-between border-b border-line-dark py-2.5">
+                      <span className="text-paper/60">土日祝</span>
+                      <span className="font-en font-semibold tracking-wide">
+                        9:00 - 18:00
+                      </span>
+                    </div>
+                    <div className="pt-3">
+                      <span className="text-paper/60">不定休</span>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
 
               {/* FAQ Link */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <Card className="shadow-xl">
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4 flex items-center">
-                      <MessageCircle className="w-5 h-5 text-primary mr-2" />
-                      よくあるご質問
-                    </h3>
-                    <p className="text-sm text-text-sub mb-4">
-                      こちらで解決するかもしれません
-                    </p>
-                    <ul className="space-y-2 mb-4">
-                      {faqTopics.map((topic, index) => (
-                        <li key={index} className="text-sm">
-                          <span className="text-primary mr-2">→</span>
-                          {topic}
-                        </li>
-                      ))}
-                    </ul>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-full border-2 border-primary hover:bg-primary hover:text-white"
-                    >
-                      <a href="/faq">FAQを見る</a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Reveal delay={0.3}>
+                <div className="rounded-2xl border border-border bg-white p-7">
+                  <h3 className="flex items-center gap-2.5 font-display text-xl font-black">
+                    <MessageCircle className="h-5 w-5 text-primary" />
+                    よくあるご質問
+                  </h3>
+                  <p className="mt-3 text-sm text-text-sub">
+                    こちらで解決するかもしれません
+                  </p>
+                  <ul className="mt-4 space-y-2.5">
+                    {faqTopics.map((topic) => (
+                      <li
+                        key={topic}
+                        className="flex items-center gap-2.5 text-sm"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-secondary"
+                        />
+                        {topic}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="mt-6 w-full border-ink/20 hover:opacity-100 hover:border-primary hover:text-primary"
+                  >
+                    <a href="/faq">FAQを見る</a>
+                  </Button>
+                </div>
+              </Reveal>
             </div>
           </div>
         </Container>
       </section>
-    </div>
+    </>
   );
 }

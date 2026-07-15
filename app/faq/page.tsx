@@ -1,10 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
@@ -12,9 +9,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Container from "@/components/Container";
+import Reveal from "@/components/motion/Reveal";
+import PageIntro from "@/components/site/PageIntro";
+import SectionHeading from "@/components/site/SectionHeading";
 import StructuredData from "@/components/seo/StructuredData";
 import {
-  HelpCircle,
   Calendar,
   CreditCard,
   Car,
@@ -29,7 +28,6 @@ const faqCategories = [
     id: "reservation",
     title: "予約について",
     icon: Calendar,
-    color: "from-blue-500 to-blue-600",
     faqs: [
       {
         q: "予約はいつから可能ですか？",
@@ -49,7 +47,6 @@ const faqCategories = [
     id: "pricing",
     title: "料金について",
     icon: CreditCard,
-    color: "from-green-500 to-green-600",
     faqs: [
       {
         q: "料金にはどこまで含まれていますか？",
@@ -73,7 +70,6 @@ const faqCategories = [
     id: "vehicle",
     title: "車両について",
     icon: Car,
-    color: "from-primary to-primary-dark",
     faqs: [
       {
         q: "運転に必要な免許は？",
@@ -101,7 +97,6 @@ const faqCategories = [
     id: "usage",
     title: "利用当日について",
     icon: Users,
-    color: "from-secondary to-secondary-dark",
     faqs: [
       {
         q: "受取・返却の時間は？",
@@ -129,7 +124,6 @@ const faqCategories = [
     id: "cancellation",
     title: "キャンセルについて",
     icon: XCircle,
-    color: "from-purple-500 to-purple-600",
     faqs: [
       {
         q: "キャンセル料はいつから発生しますか？",
@@ -176,182 +170,119 @@ export default function FAQPage() {
   return (
     <>
       <StructuredData data={faqStructuredData} />
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <section className="relative h-[35vh] sm:h-[40vh] md:h-[50vh] min-h-[280px] sm:min-h-[350px] overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80"
-          alt="よくある質問"
-          fill
-          sizes="100vw"
-          className="object-cover object-center brightness-50"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-        <Container className="relative h-full flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white px-2"
-          >
-            <HelpCircle className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mx-auto mb-3 sm:mb-4 md:mb-6" />
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4">
-              よくある質問
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
-              お客様からよくいただくご質問にお答えします
-            </p>
-          </motion.div>
-        </Container>
-      </section>
+      <PageIntro
+        eyebrow="FAQ"
+        title="よくある質問"
+        lead="お客様からよくいただくご質問にお答えします"
+      />
 
       {/* FAQ Categories */}
-      <section className="py-20">
+      <section className="bg-paper py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-4">カテゴリー別FAQ</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              知りたい情報のカテゴリーからお探しください
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="Categories"
+            title="カテゴリー別FAQ"
+            lead="知りたい情報のカテゴリーからお探しください"
+          />
 
-          <div className="max-w-4xl mx-auto space-y-8">
+          <div className="mx-auto max-w-4xl space-y-16">
             {faqCategories.map((category, categoryIndex) => (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
-              >
-                <Card className="overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                  <div className={`h-2 bg-gradient-to-r ${category.color}`} />
-                  <CardContent className="p-8">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div
-                        className={`w-14 h-14 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center`}
-                      >
-                        <category.icon className="w-7 h-7 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold">{category.title}</h3>
-                    </div>
+              <Reveal key={category.id} delay={0.05}>
+                <div>
+                  <div className="flex items-center gap-4 border-b-2 border-ink pb-5">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-white">
+                      <category.icon className="h-5 w-5 text-primary" />
+                    </span>
+                    <h3 className="font-display text-xl font-black md:text-2xl">
+                      {category.title}
+                    </h3>
+                    <span
+                      aria-hidden="true"
+                      className="ml-auto font-en text-sm font-semibold text-text-sub"
+                    >
+                      {String(categoryIndex + 1).padStart(2, "0")}
+                    </span>
+                  </div>
 
-                    <Accordion type="single" collapsible className="w-full">
-                      {category.faqs.map((faq, faqIndex) => (
-                        <AccordionItem
-                          key={faqIndex}
-                          value={`item-${categoryIndex}-${faqIndex}`}
-                        >
-                          <AccordionTrigger className="text-left hover:text-primary transition-colors">
-                            {faq.q}
-                          </AccordionTrigger>
-                          <AccordionContent className="text-text-sub leading-relaxed">
-                            {faq.a}
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                  <Accordion type="single" collapsible className="w-full">
+                    {category.faqs.map((faq, faqIndex) => (
+                      <AccordionItem
+                        key={faqIndex}
+                        value={`item-${categoryIndex}-${faqIndex}`}
+                      >
+                        <AccordionTrigger>{faq.q}</AccordionTrigger>
+                        <AccordionContent className="leading-relaxed text-text-sub">
+                          {faq.a}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              </Reveal>
             ))}
           </div>
         </Container>
       </section>
 
       {/* Quick Links */}
-      <section className="py-20 bg-white">
+      <section className="border-y border-border bg-white py-24 md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold mb-4">関連ページ</h2>
-            <p className="text-xl text-text-sub max-w-2xl mx-auto">
-              さらに詳しい情報はこちらから
-            </p>
-          </motion.div>
+          <SectionHeading
+            eyebrow="Related"
+            title="関連ページ"
+            lead="さらに詳しい情報はこちらから"
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {quickLinks.map((link, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="h-full hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  <CardContent className="p-6 text-center">
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg"
-                    >
-                      <link.icon className="w-8 h-8 text-white" />
-                    </motion.div>
-                    <h3 className="font-semibold mb-4">{link.title}</h3>
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all"
-                    >
-                      <Link href={link.href}>
-                        詳しく見る <ArrowRight className="ml-2 w-4 h-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Reveal key={link.href} delay={index * 0.08}>
+                <Link
+                  href={link.href}
+                  className="group flex h-full flex-col rounded-2xl border border-border bg-paper p-7 transition-all duration-500 hover:-translate-y-1.5 hover:border-primary"
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-white transition-colors duration-300 group-hover:border-secondary">
+                    <link.icon className="h-5 w-5 text-primary" />
+                  </span>
+                  <span className="mt-6 font-display text-lg font-black">
+                    {link.title}
+                  </span>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
+                    詳しく見る
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </Container>
       </section>
 
       {/* Still Have Questions */}
-      <section className="py-20 bg-gradient-to-r from-primary via-primary-dark to-primary">
+      <section className="bg-ink py-24 text-paper md:py-32">
         <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center text-white"
-          >
-            <MessageCircle className="w-16 h-16 mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <Reveal className="text-center">
+            <p aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
+              Contact
+            </p>
+            <h2 className="font-display text-3xl font-black tracking-tight md:text-5xl">
               まだ疑問が解決しませんか？
             </h2>
-            <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-paper/65 md:text-lg">
               お気軽にお問い合わせください。
               <br />
               専任スタッフが丁寧にお答えいたします。
             </p>
-            <Button
-              asChild
-              size="lg"
-              className="bg-secondary hover:bg-secondary-dark text-white hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6"
-            >
-              <Link href="/contact">
-                お問い合わせ <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-            </Button>
-          </motion.div>
+            <div className="mt-10 flex justify-center">
+              <Button asChild variant="secondary" size="lg">
+                <Link href="/contact">
+                  お問い合わせ <ArrowRight className="!size-5" />
+                </Link>
+              </Button>
+            </div>
+          </Reveal>
         </Container>
       </section>
-    </div>
     </>
   );
 }

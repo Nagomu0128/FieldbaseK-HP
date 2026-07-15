@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import Reveal from "@/components/motion/Reveal";
 
 const footerLinks = {
   pages: [
@@ -31,99 +31,94 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-gray-50 to-gray-100 border-t">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="col-span-1 md:col-span-2"
+    <footer className="bg-ink text-paper">
+      <div className="mx-auto max-w-7xl px-4 pb-10 pt-20 sm:px-6 md:pt-28 lg:px-8">
+        {/* Wordmark */}
+        <Reveal>
+          <p
+            aria-hidden="true"
+            className="font-en text-[13.5vw] font-bold leading-[0.95] tracking-tight text-paper md:text-[7.5rem]"
           >
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
-              FieldBase-K
-            </h3>
-            <p className="text-text-sub mb-6 max-w-md">
+            FieldBase-K<span className="text-secondary">.</span>
+          </p>
+        </Reveal>
+
+        <div className="mt-12 grid grid-cols-1 gap-12 border-t border-line-dark pt-12 md:mt-16 md:grid-cols-12 md:pt-16">
+          {/* Brand Section */}
+          <Reveal className="md:col-span-6">
+            <p className="max-w-md leading-relaxed text-paper/60">
               家族での思い出づくりに最適なキャンピングカーレンタルサービス。
               初めての方でも安心してご利用いただけるよう、丁寧なサポートを提供しています。
             </p>
 
             {/* Contact Info */}
-            <div className="space-y-2 text-sm text-text-sub">
+            <div className="mt-8 space-y-3 text-sm">
               <a
                 href="https://maps.app.goo.gl/PVzS5o7RfNm7uu8F7"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 hover:text-primary transition-colors"
+                className="flex items-center gap-3 text-paper/70 transition-colors hover:text-secondary"
               >
-                <MapPin className="w-4 h-4" />
+                <MapPin className="h-4 w-4 shrink-0 text-secondary" />
                 <span>滋賀県大津市松山町 6-31</span>
               </a>
-              <div className="flex items-center space-x-2">
-                <Phone className="w-4 h-4" />
-                <span>070-9188-3811</span>
+              <div className="flex items-center gap-3 text-paper/70">
+                <Phone className="h-4 w-4 shrink-0 text-secondary" />
+                <span className="font-en tracking-wide">070-9188-3811</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="w-4 h-4" />
-                <span>fieldbasek@gmail.com</span>
+              <div className="flex items-center gap-3 text-paper/70">
+                <Mail className="h-4 w-4 shrink-0 text-secondary" />
+                <span className="font-en tracking-wide">
+                  fieldbasek@gmail.com
+                </span>
               </div>
             </div>
 
             {/* Social Links */}
-            <div className="flex space-x-4 mt-6">
+            <div className="mt-8 flex gap-3">
               {socialLinks.map((social) => {
                 const isExternal = social.href.startsWith("http");
                 return (
-                  <motion.a
+                  <a
                     key={social.label}
                     href={social.href}
                     target={isExternal ? "_blank" : undefined}
                     rel={isExternal ? "noopener noreferrer" : undefined}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-line-dark text-paper/70 transition-all duration-300 hover:border-secondary hover:text-secondary"
                     aria-label={social.label}
                   >
-                    <social.icon className="w-5 h-5 text-primary" />
-                  </motion.a>
+                    <social.icon className="h-5 w-5" />
+                  </a>
                 );
               })}
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* Quick Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <h4 className="font-semibold text-foreground mb-4">クイックリンク</h4>
-            <ul className="space-y-2">
+          <Reveal delay={0.1} className="md:col-span-3">
+            <h4 className="mb-6 text-sm font-bold tracking-[0.18em] text-secondary">
+              クイックリンク
+            </h4>
+            <ul className="space-y-3">
               {footerLinks.pages.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-text-sub hover:text-primary transition-colors text-sm"
+                    className="text-sm text-paper/70 transition-colors hover:text-paper"
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </Reveal>
 
           {/* Legal */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h4 className="font-semibold text-foreground mb-4">法的情報</h4>
-            <ul className="space-y-2">
+          <Reveal delay={0.2} className="md:col-span-3">
+            <h4 className="mb-6 text-sm font-bold tracking-[0.18em] text-secondary">
+              法的情報
+            </h4>
+            <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
                   {link.external ? (
@@ -131,14 +126,14 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text-sub hover:text-primary transition-colors text-sm"
+                      className="text-sm text-paper/70 transition-colors hover:text-paper"
                     >
                       {link.label}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-text-sub hover:text-primary transition-colors text-sm"
+                      className="text-sm text-paper/70 transition-colors hover:text-paper"
                     >
                       {link.label}
                     </Link>
@@ -146,32 +141,26 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </Reveal>
         </div>
 
         {/* Bottom Bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 pt-8 border-t border-gray-200 space-y-4"
-        >
-          <div className="text-center text-sm text-text-sub">
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line-dark pt-8 md:flex-row">
+          <div className="text-sm text-paper/50">
             関連サイト：{" "}
             <a
               href="https://camping-cars.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-primary transition-colors"
+              className="underline underline-offset-4 transition-colors hover:text-secondary"
             >
               キャンピングカースタイル
             </a>
           </div>
-          <p className="text-center text-sm text-text-sub">
+          <p className="text-sm text-paper/50">
             &copy; {new Date().getFullYear()} FieldBase-K. All rights reserved.
           </p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
