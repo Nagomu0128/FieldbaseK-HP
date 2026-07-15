@@ -282,11 +282,8 @@ export default function PricingPage() {
               <Reveal key={sim.title} delay={index * 0.1} className="h-full">
                 <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-paper">
                   <div className="bg-ink p-6 text-paper">
-                    <div
-                      aria-hidden="true"
-                      className="font-en text-xs font-semibold uppercase tracking-[0.25em] text-secondary"
-                    >
-                      Case {String(index + 1).padStart(2, "0")}
+                    <div className="text-xs font-bold tracking-[0.25em] text-secondary">
+                      ケース{index + 1}
                     </div>
                     <p className="mt-2 font-bold leading-snug">{sim.title}</p>
                   </div>

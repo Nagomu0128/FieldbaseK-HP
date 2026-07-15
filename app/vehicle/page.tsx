@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { getLenis } from "@/components/motion/SmoothScroll";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
 import Reveal from "@/components/motion/Reveal";
@@ -88,6 +89,23 @@ const notes = [
 
 export default function VehiclePage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const lightboxOpen = selectedImage !== null;
+
+  // ライトボックス表示中は背面スクロールを止め、Escape で閉じられるようにする
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    getLenis()?.stop();
+    document.documentElement.classList.add("lenis-stopped");
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      getLenis()?.start();
+      document.documentElement.classList.remove("lenis-stopped");
+    };
+  }, [lightboxOpen]);
 
   const productData = {
     "@context": "https://schema.org",
@@ -262,6 +280,9 @@ export default function VehiclePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={vehicleImages[selectedImage].alt}
             className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/95 p-4"
             onClick={() => setSelectedImage(null)}
           >

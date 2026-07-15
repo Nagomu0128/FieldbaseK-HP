@@ -68,7 +68,10 @@ export default function AvailabilityCalendar() {
           setError("空き状況の取得に失敗しました");
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        // 月連打時、中断された古いリクエストがスピナーを消さないようにする
+        if (!controller.signal.aborted) setLoading(false);
+      });
 
     return () => controller.abort();
   }, [viewYear, viewMonth]);

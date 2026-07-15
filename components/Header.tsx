@@ -40,21 +40,38 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // メニュー展開中は慣性スクロールを停止
+  // メニュー展開中は慣性スクロールを停止し、背面コンテンツをフォーカス不可(inert)にする
   useEffect(() => {
     const lenis = getLenis();
+    const pageRegions = [
+      document.querySelector("main"),
+      document.querySelector("footer"),
+    ];
     if (isMenuOpen) {
       lenis?.stop();
       document.documentElement.classList.add("lenis-stopped");
+      pageRegions.forEach((el) => el?.setAttribute("inert", ""));
     } else {
       lenis?.start();
       document.documentElement.classList.remove("lenis-stopped");
+      pageRegions.forEach((el) => el?.removeAttribute("inert"));
     }
     return () => {
       getLenis()?.start();
       document.documentElement.classList.remove("lenis-stopped");
+      pageRegions.forEach((el) => el?.removeAttribute("inert"));
     };
   }, [isMenuOpen]);
+
+  // md 以上にリサイズされたらメニューを閉じる(UIだけ消えてロックが残るのを防ぐ)
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setIsMenuOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const onDark = !isScrolled || isMenuOpen;
 
@@ -129,7 +146,7 @@ export default function Header() {
                   : "border-ink/15 text-ink"
               )}
               onClick={() => setIsMenuOpen((v) => !v)}
-              aria-label="メニュー"
+              aria-label={isMenuOpen ? "メニューを閉じる" : "メニューを開く"}
               aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? (

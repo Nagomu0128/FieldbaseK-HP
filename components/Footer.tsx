@@ -96,8 +96,8 @@ export default function Footer() {
 
           {/* Quick Links */}
           <Reveal delay={0.1} className="md:col-span-3">
-            <h4 aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
-              Menu
+            <h4 className="mb-6 text-sm font-bold tracking-[0.18em] text-secondary">
+              クイックリンク
             </h4>
             <ul className="space-y-3">
               {footerLinks.pages.map((link) => (
@@ -115,8 +115,8 @@ export default function Footer() {
 
           {/* Legal */}
           <Reveal delay={0.2} className="md:col-span-3">
-            <h4 aria-hidden="true" className="text-eyebrow mb-6 text-secondary">
-              Legal
+            <h4 className="mb-6 text-sm font-bold tracking-[0.18em] text-secondary">
+              法的情報
             </h4>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (

@@ -100,7 +100,8 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
-.lenis.lenis-stopped {
+/* Lenis 非稼働時(prefers-reduced-motion)でもスクロールロックが効くよう単独セレクタにする */
+.lenis-stopped {
   overflow: hidden;
 }
 
