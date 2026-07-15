@@ -40,11 +40,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ルート遷移でメニューを閉じる
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
-
   // メニュー展開中は慣性スクロールを停止
   useEffect(() => {
     const lenis = getLenis();
