@@ -57,7 +57,7 @@ export default function Home() {
             alt="滋賀・大津のレンタルキャンピングカー ナッツRV ジョリビー"
             fill
             sizes="100vw"
-            className="object-cover object-[center_65%] brightness-50"
+            className="object-cover object-center brightness-50"
             priority
             placeholder="blur"
           />
